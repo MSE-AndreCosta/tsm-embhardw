@@ -9,6 +9,14 @@
    categories="System" />
  <parameter name="bonusData"><![CDATA[bonusData 
 {
+   element ParallelPort_0
+   {
+      datum _sortIndex
+      {
+         value = "7";
+         type = "int";
+      }
+   }
    element clk_0
    {
       datum _sortIndex
@@ -45,7 +53,7 @@
    {
       datum baseAddress
       {
-         value = "33558544";
+         value = "33558552";
          type = "String";
       }
    }
@@ -85,7 +93,7 @@
    {
       datum baseAddress
       {
-         value = "33558552";
+         value = "33558544";
          type = "String";
       }
    }
@@ -133,6 +141,11 @@
    type="conduit"
    dir="end" />
  <interface
+   name="parallelport_0_conduit_end"
+   internal="ParallelPort_0.conduit_end"
+   type="conduit"
+   dir="end" />
+ <interface
    name="pll_sdram_clk"
    internal="pll.sdram_clk"
    type="clock"
@@ -143,6 +156,7 @@
    internal="sdram_controller.wire"
    type="conduit"
    dir="end" />
+ <module name="ParallelPort_0" kind="ParallelPort" version="1.0" enabled="1" />
  <module name="clk_0" kind="clock_source" version="18.1" enabled="1">
   <parameter name="clockFrequency" value="50000000" />
   <parameter name="clockFrequencyKnown" value="true" />
@@ -169,7 +183,7 @@
   <parameter name="dataAddrWidth" value="26" />
   <parameter name="dataMasterHighPerformanceAddrWidth" value="1" />
   <parameter name="dataMasterHighPerformanceMapParam" value="" />
-  <parameter name="dataSlaveMapParam"><![CDATA[<address-map><slave name='sdram_controller.s1' start='0x1000000' end='0x2000000' type='altera_avalon_new_sdram_controller.s1' /><slave name='cpu.debug_mem_slave' start='0x2000800' end='0x2001000' type='altera_nios2_gen2.debug_mem_slave' /><slave name='leds.s1' start='0x2001000' end='0x2001010' type='altera_avalon_pio.s1' /><slave name='jtag_uart.avalon_jtag_slave' start='0x2001010' end='0x2001018' type='altera_avalon_jtag_uart.avalon_jtag_slave' /><slave name='qsys_sysid.control_slave' start='0x2001018' end='0x2001020' type='altera_avalon_sysid_qsys.control_slave' /></address-map>]]></parameter>
+  <parameter name="dataSlaveMapParam"><![CDATA[<address-map><slave name='ParallelPort_0.avalon_slave_0' start='0x0' end='0x20' type='ParallelPort.avalon_slave_0' /><slave name='sdram_controller.s1' start='0x1000000' end='0x2000000' type='altera_avalon_new_sdram_controller.s1' /><slave name='cpu.debug_mem_slave' start='0x2000800' end='0x2001000' type='altera_nios2_gen2.debug_mem_slave' /><slave name='leds.s1' start='0x2001000' end='0x2001010' type='altera_avalon_pio.s1' /><slave name='qsys_sysid.control_slave' start='0x2001010' end='0x2001018' type='altera_avalon_sysid_qsys.control_slave' /><slave name='jtag_uart.avalon_jtag_slave' start='0x2001018' end='0x2001020' type='altera_avalon_jtag_uart.avalon_jtag_slave' /></address-map>]]></parameter>
   <parameter name="data_master_high_performance_paddr_base" value="0" />
   <parameter name="data_master_high_performance_paddr_size" value="0" />
   <parameter name="data_master_paddr_base" value="0" />
@@ -418,7 +432,16 @@
    start="cpu.data_master"
    end="jtag_uart.avalon_jtag_slave">
   <parameter name="arbitrationPriority" value="1" />
-  <parameter name="baseAddress" value="0x02001010" />
+  <parameter name="baseAddress" value="0x02001018" />
+  <parameter name="defaultConnection" value="false" />
+ </connection>
+ <connection
+   kind="avalon"
+   version="18.1"
+   start="cpu.data_master"
+   end="ParallelPort_0.avalon_slave_0">
+  <parameter name="arbitrationPriority" value="1" />
+  <parameter name="baseAddress" value="0x0000" />
   <parameter name="defaultConnection" value="false" />
  </connection>
  <connection
@@ -427,7 +450,7 @@
    start="cpu.data_master"
    end="qsys_sysid.control_slave">
   <parameter name="arbitrationPriority" value="1" />
-  <parameter name="baseAddress" value="0x02001018" />
+  <parameter name="baseAddress" value="0x02001010" />
   <parameter name="defaultConnection" value="false" />
  </connection>
  <connection
@@ -481,6 +504,11 @@
    version="18.1"
    start="pll.sys_clk"
    end="sdram_controller.clk" />
+ <connection
+   kind="clock"
+   version="18.1"
+   start="pll.sys_clk"
+   end="ParallelPort_0.clock" />
  <connection kind="interrupt" version="18.1" start="cpu.irq" end="jtag_uart.irq">
   <parameter name="irqNumber" value="0" />
  </connection>
@@ -536,6 +564,11 @@
    start="pll.reset_source"
    end="sdram_controller.reset" />
  <connection kind="reset" version="18.1" start="pll.reset_source" end="cpu.reset" />
+ <connection
+   kind="reset"
+   version="18.1"
+   start="pll.reset_source"
+   end="ParallelPort_0.reset_sink" />
  <interconnectRequirement for="$system" name="qsys_mm.clockCrossingAdapter" value="HANDSHAKE" />
  <interconnectRequirement for="$system" name="qsys_mm.enableEccProtection" value="FALSE" />
  <interconnectRequirement for="$system" name="qsys_mm.insertDefaultSlave" value="FALSE" />
