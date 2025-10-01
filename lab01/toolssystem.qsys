@@ -6,7 +6,7 @@
    version="1.0"
    description=""
    tags=""
-   categories="" />
+   categories="System" />
  <parameter name="bonusData"><![CDATA[bonusData 
 {
    element clk_0
@@ -119,7 +119,7 @@
  <parameter name="hideFromIPCatalog" value="false" />
  <parameter name="lockedInterfaceDefinition" value="" />
  <parameter name="maxAdditionalLatency" value="1" />
- <parameter name="projectName" value="" />
+ <parameter name="projectName" value="tools.qpf" />
  <parameter name="sopcBorderPoints" value="false" />
  <parameter name="systemHash" value="0" />
  <parameter name="testBenchDutName" value="" />
@@ -150,8 +150,8 @@
   <parameter name="resetSynchronousEdges" value="NONE" />
  </module>
  <module name="cpu" kind="altera_nios2_gen2" version="18.1" enabled="1">
-  <parameter name="AUTO_CLK_CLOCK_DOMAIN" value="5" />
-  <parameter name="AUTO_CLK_RESET_DOMAIN" value="5" />
+  <parameter name="AUTO_CLK_CLOCK_DOMAIN" value="6" />
+  <parameter name="AUTO_CLK_RESET_DOMAIN" value="6" />
   <parameter name="AUTO_DEVICE" value="EP4CE30F23C7" />
   <parameter name="AUTO_DEVICE_SPEEDGRADE" value="7" />
   <parameter name="bht_ramBlockType" value="Automatic" />
@@ -489,23 +489,6 @@
    version="18.1"
    start="clk_0.clk_reset"
    end="pll.ref_reset" />
- <connection kind="reset" version="18.1" start="clk_0.clk_reset" end="cpu.reset" />
- <connection
-   kind="reset"
-   version="18.1"
-   start="clk_0.clk_reset"
-   end="sdram_controller.reset" />
- <connection kind="reset" version="18.1" start="clk_0.clk_reset" end="leds.reset" />
- <connection
-   kind="reset"
-   version="18.1"
-   start="clk_0.clk_reset"
-   end="qsys_sysid.reset" />
- <connection
-   kind="reset"
-   version="18.1"
-   start="clk_0.clk_reset"
-   end="jtag_uart.reset" />
  <connection
    kind="reset"
    version="18.1"
@@ -531,6 +514,28 @@
    version="18.1"
    start="cpu.debug_reset_request"
    end="jtag_uart.reset" />
+ <connection
+   kind="reset"
+   version="18.1"
+   start="pll.reset_source"
+   end="pll.ref_reset" />
+ <connection
+   kind="reset"
+   version="18.1"
+   start="pll.reset_source"
+   end="qsys_sysid.reset" />
+ <connection
+   kind="reset"
+   version="18.1"
+   start="pll.reset_source"
+   end="jtag_uart.reset" />
+ <connection kind="reset" version="18.1" start="pll.reset_source" end="leds.reset" />
+ <connection
+   kind="reset"
+   version="18.1"
+   start="pll.reset_source"
+   end="sdram_controller.reset" />
+ <connection kind="reset" version="18.1" start="pll.reset_source" end="cpu.reset" />
  <interconnectRequirement for="$system" name="qsys_mm.clockCrossingAdapter" value="HANDSHAKE" />
  <interconnectRequirement for="$system" name="qsys_mm.enableEccProtection" value="FALSE" />
  <interconnectRequirement for="$system" name="qsys_mm.insertDefaultSlave" value="FALSE" />
