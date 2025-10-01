@@ -15,3 +15,5 @@ lab01/software/led_counter/.settings
 lab01/software/led_counter/Makefile
 lab01/software/led_counter/create-this-app
 lab01/software/led_counter/readme.txt
+lab01/ParallelPort_hw.tcl
+lab01/ParallelPort_hw.tcl~
