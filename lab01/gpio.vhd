@@ -2,26 +2,29 @@ library ieee;
 use ieee.std_logic_1164.all;
 
 entity parallelport is
- port(
-	-- avalon interfaces signals
-	clk : in std_logic;
-	nreset : in std_logic;
-	address : in std_logic_vector (2 downto 0);
-	chipselect : in std_logic;
-	read : in std_logic;
-	write : in std_logic;
-	readdata: out std_logic_vector (7 downto 0);
-	writedata : in std_logic_vector (7 downto 0);
-	-- parallel port external interface
+	generic(
+		N: natural := 32
+	);
+	port(
+		-- avalon interfaces signals
+		clk : in std_logic;
+		nreset : in std_logic;
+		address : in std_logic_vector (2 downto 0);
+		chipselect : in std_logic;
+		read : in std_logic;
+		write : in std_logic;
+		readdata: out std_logic_vector (N - 1 downto 0);
+		writedata : in std_logic_vector (N - 1 downto 0);
+		-- parallel port external interface
 
-	parport : inout std_logic_vector (7 downto 0)
- );
+		parport : inout std_logic_vector (N - 1 downto 0)
+	);
 end parallelport;
 
 architecture comp of parallelport is
-	signal iregdir : std_logic_vector (7 downto 0);
-	signal iregport: std_logic_vector (7 downto 0);
-	signal iregpin : std_logic_vector (7 downto 0);
+	signal iregdir : std_logic_vector (N - 1 downto 0);
+	signal iregport: std_logic_vector (N - 1 downto 0);
+	signal iregpin : std_logic_vector (N - 1 downto 0);
 	signal reset: std_logic;
 begin
 
@@ -59,11 +62,11 @@ begin
 
 	pport: process(iregdir, iregport)
 	begin
-	for i in 0 to 7 loop
-		if iregdir(i) = '1' then
-			parport(i) <= iregport(i);
-		else
-			parport(i) <= 'Z';
+		for i in 0 to N - 1 loop
+			if iregdir(i) = '1' then
+				parport(i) <= iregport(i);
+			else
+				parport(i) <= 'Z';
 			end if;
 		end loop;
 	end process;
