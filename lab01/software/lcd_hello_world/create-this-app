@@ -3,9 +3,9 @@
 # This script creates the blank_project application in this directory.
 
 
-BSP_DIR=../hello_lcd_bsp
+BSP_DIR=../lcd_hello_world_bsp
 QUARTUS_PROJECT_DIR=../../
-NIOS2_APP_GEN_ARGS="--elf-name hello_lcd.elf --no-src --set OBJDUMP_INCLUDE_SOURCE 1"
+NIOS2_APP_GEN_ARGS="--elf-name lcd_hello_world.elf --no-src --set OBJDUMP_INCLUDE_SOURCE 1"
 
 
 # First, check to see if $SOPC_KIT_NIOS2 environmental variable is set.
