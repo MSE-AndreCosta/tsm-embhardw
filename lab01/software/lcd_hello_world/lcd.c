@@ -5,6 +5,7 @@
 #include "io.h"
 #include "timer.h"
 #include <stdint.h>
+#include <stdio.h>
 
 #define LCD_DEVICE_ID_OFFSET 0x0
 #define LCD_DEVICE_ID	     0xcafe
@@ -21,12 +22,12 @@ static void lcd_write_cmd(uint16_t cmd);
 
 static inline void lcd_write_cmd(uint16_t cmd)
 {
-	IOWR_32DIRECT(LCD_INTERFACE_0_BASE, LCD_COMMAND_OFFSET, cmd << 16);
+	IOWR_32DIRECT(LCD_INTERFACE_0_BASE, LCD_COMMAND_OFFSET, cmd);
 }
 
 static inline void lcd_write_data(uint16_t data)
 {
-	IOWR_32DIRECT(LCD_INTERFACE_0_BASE, LCD_DATA_OFFSET, data << 16);
+	IOWR_32DIRECT(LCD_INTERFACE_0_BASE, LCD_DATA_OFFSET, data);
 }
 
 static inline void lcd_reset(void)
@@ -37,6 +38,11 @@ static inline void lcd_reset(void)
 
 void lcd_init(void)
 {
+	printf("%#x\n", LCD_INTERFACE_0_BASE);
+	for(int i = 0; i < 0xF; ++i)
+	{
+		printf("%d %#x\n", i, IORD_8DIRECT(LCD_INTERFACE_0_BASE, i));
+	}
 	for(int i = 0; i < 0xF; ++i)
 	{
 		printf("%d %#x\n", i, IORD_16DIRECT(LCD_INTERFACE_0_BASE, i));

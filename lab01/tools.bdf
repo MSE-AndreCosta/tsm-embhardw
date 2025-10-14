@@ -561,11 +561,6 @@ refer to the applicable agreement for further details.
 	(pt 472 264)
 )
 (connector
-	(pt 448 184)
-	(pt 472 184)
-	(bus)
-)
-(connector
 	(pt 448 56)
 	(pt 472 56)
 )
@@ -583,11 +578,6 @@ refer to the applicable agreement for further details.
 	(bus)
 )
 (connector
-	(pt 472 224)
-	(pt 448 224)
-	(bus)
-)
-(connector
 	(pt 448 144)
 	(pt 472 144)
 )
@@ -599,5 +589,15 @@ refer to the applicable agreement for further details.
 (connector
 	(pt 472 384)
 	(pt 448 384)
+	(bus)
+)
+(connector
+	(pt 448 224)
+	(pt 472 224)
+	(bus)
+)
+(connector
+	(pt 448 184)
+	(pt 472 184)
 	(bus)
 )
