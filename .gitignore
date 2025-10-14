@@ -14,5 +14,7 @@ lab01/software/*/.settings
 lab01/software/*/Makefile
 lab01/ParallelPort_hw.tcl
 lab01/ParallelPort_hw.tcl~
+lab01/lcd_interface_hw.tcl
+lab01/lcd_interface_hw.tcl~
 lab01/sim
 lab01/software/*bsp
