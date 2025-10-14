@@ -59,7 +59,7 @@ begin
 					when "001" => 
 						lcd_data_s <= writedata;
 						lcd_ncd <= '0';
-					when "010" => 
+					when "100" => 
 						lcd_data_s <= writedata;
 						lcd_ncd <= '1';
 					when others => null;
@@ -68,14 +68,16 @@ begin
 		end if;
 	end process;
 
-	register_read: process(Clk)
+	register_read: process(clk)
 	begin
-		if rising_edge(Clk) then
+		if rising_edge(clk) then
 			readdata <= (others => '0');
 			if chipselect = '1' and read = '1' then
 				case address(2 downto 0) is
 					when "000" => readdata <= DEVICE_ID;
-					when others => null;
+					when "010" => readdata <= x"aaaa" ;
+					when "100" => readdata <= x"bbbb";
+					when others => readdata <= x"dead";
 				end case;
 			end if;
 		end if;
