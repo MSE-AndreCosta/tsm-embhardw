@@ -10,11 +10,9 @@ eclipse-workspace
 **.map
 **.elf
 **.objdump
-lab01/software/led_counter_bsp
-lab01/software/led_counter/.settings
-lab01/software/led_counter/Makefile
-lab01/software/led_counter/create-this-app
-lab01/software/led_counter/readme.txt
+lab01/software/*/.settings
+lab01/software/*/Makefile
 lab01/ParallelPort_hw.tcl
 lab01/ParallelPort_hw.tcl~
 lab01/sim
+lab01/software/*bsp
