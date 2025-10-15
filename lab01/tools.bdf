@@ -69,7 +69,7 @@ refer to the applicable agreement for further details.
 		(line (pt 106 12)(pt 102 8))
 	)
 	(flipy)
-	(annotation_block (location)(rect 96 328 152 552))
+	(annotation_block (location)(rect 64 296 120 520))
 )
 (pin
 	(output)
@@ -87,7 +87,7 @@ refer to the applicable agreement for further details.
 		(line (pt 98 12)(pt 94 8))
 	)
 	(flipy)
-	(annotation_block (location)(rect 80 264 136 304))
+	(annotation_block (location)(rect 144 256 200 296))
 )
 (pin
 	(output)
@@ -105,7 +105,7 @@ refer to the applicable agreement for further details.
 		(line (pt 98 12)(pt 94 8))
 	)
 	(flipy)
-	(annotation_block (location)(rect 144 264 208 280))
+	(annotation_block (location)(rect 136 328 200 344))
 )
 (pin
 	(output)
@@ -123,7 +123,7 @@ refer to the applicable agreement for further details.
 		(line (pt 98 12)(pt 94 8))
 	)
 	(flipy)
-	(annotation_block (location)(rect 160 344 216 360))
+	(annotation_block (location)(rect 136 344 192 360))
 )
 (pin
 	(output)
@@ -141,7 +141,7 @@ refer to the applicable agreement for further details.
 		(line (pt 98 12)(pt 94 8))
 	)
 	(flipy)
-	(annotation_block (location)(rect 160 360 216 376))
+	(annotation_block (location)(rect 136 360 192 376))
 )
 (pin
 	(output)
@@ -159,7 +159,7 @@ refer to the applicable agreement for further details.
 		(line (pt 98 12)(pt 94 8))
 	)
 	(flipy)
-	(annotation_block (location)(rect 280 448 344 464))
+	(annotation_block (location)(rect 200 440 264 456))
 )
 (pin
 	(output)
@@ -177,7 +177,7 @@ refer to the applicable agreement for further details.
 		(line (pt 98 12)(pt 94 8))
 	)
 	(flipy)
-	(annotation_block (location)(rect 280 472 336 488))
+	(annotation_block (location)(rect 208 456 264 472))
 )
 (pin
 	(output)
@@ -212,7 +212,7 @@ refer to the applicable agreement for further details.
 		(line (pt 114 12)(pt 110 8))
 	)
 	(flipy)
-	(annotation_block (location)(rect 136 416 200 472))
+	(annotation_block (location)(rect 136 440 200 472))
 )
 (pin
 	(output)
@@ -248,7 +248,7 @@ refer to the applicable agreement for further details.
 		(line (pt 218 12)(pt 214 8))
 	)
 	(flipy)
-	(annotation_block (location)(rect 72 192 128 240))
+	(annotation_block (location)(rect 72 184 128 240))
 )
 (pin
 	(output)
@@ -339,7 +339,7 @@ refer to the applicable agreement for further details.
 	)
 	(flipy)
 	(text "VCC" (rect 168 7 188 17)(font "Arial" (font_size 6)))
-	(annotation_block (location)(rect 136 376 208 416))
+	(annotation_block (location)(rect 136 384 208 432))
 )
 (symbol
 	(rect 472 -16 1064 464)
