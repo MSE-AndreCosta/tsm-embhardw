@@ -13,27 +13,27 @@
 #define LCD_COMMAND_OFFSET   0x4
 #define LCD_DATA_OFFSET	     0x8
 
-#define LCD_IM0_MASK	     0x1
-#define LCD_NRESET_MASK	     0x2
-#define LCD_NCS_MASK	     0x4
+#define LCD_IM0_MASK	     0x20
+#define LCD_NRESET_MASK	     0x40
+#define LCD_NCS_MASK	     0x80
 
 static void lcd_write_data(uint16_t data);
 static void lcd_write_cmd(uint16_t cmd);
 
 static inline void lcd_write_cmd(uint16_t cmd)
 {
-	IOWR_32DIRECT(LCD_INTERFACE_0_BASE, LCD_COMMAND_OFFSET, cmd);
+	IOWR_16DIRECT(LCD_INTERFACE_0_BASE, LCD_COMMAND_OFFSET, cmd);
 }
 
 static inline void lcd_write_data(uint16_t data)
 {
-	IOWR_32DIRECT(LCD_INTERFACE_0_BASE, LCD_DATA_OFFSET, data);
+	IOWR_16DIRECT(LCD_INTERFACE_0_BASE, LCD_DATA_OFFSET, data);
 }
 
 static inline void lcd_reset(void)
 {
 	/* nReset = 0 IM0 = 1 (16 bit mode)*/
-	IOWR_8DIRECT(PARALLELPORT_1_BASE, 0x2, LCD_IM0_MASK);
+	IOWR_8DIRECT(PARALLELPORT_1_BASE, 0x2, 0/*LCD_IM0_MASK*/);
 }
 
 void lcd_init(void)
@@ -151,13 +151,13 @@ void lcd_init(void)
 void lcd_select(void)
 {
 	/* nReset = 1 IM0 = 1 (16 bit mode) nCS = 0 */
-	IOWR_8DIRECT(PARALLELPORT_1_BASE, 0x2, LCD_IM0_MASK | LCD_NRESET_MASK);
+	IOWR_8DIRECT(PARALLELPORT_1_BASE, 0x2, /*LCD_IM0_MASK |*/ LCD_NRESET_MASK);
 }
 
 void lcd_unselect(void)
 {
 	/* nReset = 1 IM0 = 1 (16 bit mode) nCS = 1 */
-	IOWR_8DIRECT(PARALLELPORT_1_BASE, 0x2, LCD_IM0_MASK | LCD_NRESET_MASK | LCD_NCS_MASK);
+	IOWR_8DIRECT(PARALLELPORT_1_BASE, 0x2, /*LCD_IM0_MASK |*/ LCD_NRESET_MASK | LCD_NCS_MASK);
 }
 
 void lcd_write(const uint16_t *buffer)
