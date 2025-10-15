@@ -56,7 +56,7 @@ begin
 		elsif rising_edge(clk) then
 			if chipselect = '1' and write = '1' then
 				case address(2 downto 0) is
-					when "001" => 
+					when "010" => 
 						lcd_data_s <= writedata;
 						lcd_ncd <= '0';
 					when "100" => 
@@ -70,16 +70,12 @@ begin
 
 	register_read: process(clk)
 	begin
-		if rising_edge(clk) then
-			readdata <= (others => '0');
-			if chipselect = '1' and read = '1' then
-				case address(2 downto 0) is
-					when "000" => readdata <= DEVICE_ID;
-					when "010" => readdata <= x"aaaa" ;
-					when "100" => readdata <= x"bbbb";
-					when others => readdata <= x"dead";
-				end case;
-			end if;
+		readdata <= (others => '0');
+		if chipselect = '1' and read = '1' then
+			case address(2 downto 0) is
+				when "000" => readdata <= DEVICE_ID;
+				when others => readdata <= x"dead";
+			end case;
 		end if;
 	end process;
 
@@ -90,7 +86,6 @@ begin
 			curr_lcd_state <= IDLE;
 		elsif rising_edge(clk) then
 			curr_lcd_state <= next_lcd_state;
-
 			if clk_counter_rst_s = '1' then
 				clk_counter <= (others => '0');
 			else
@@ -125,7 +120,7 @@ begin
 			if twr = '1' then 
 				-- Adding this line, the waitrequest signal is only set to 1 for 3 clock cycles which
 				-- can mean the CPU unsets the CS line too early for the LCD
-				-- waitrequest <= '0'; 
+				waitrequest <= '0'; 
 				next_lcd_state <= IDLE;
 			end if;
 		end case;
