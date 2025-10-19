@@ -48,6 +48,7 @@ architecture comp of lcd_dma_controller is
 	signal lcd_ncd_direct_s : std_logic;
 
 	signal lcd_data_dma_s : std_logic_vector(lcd_data'range);
+	signal next_lcd_data_dma_s : std_logic_vector(lcd_data'range);
 	signal lcd_ncd_dma_s : std_logic;
 
 	signal lcd_wr : std_logic;
@@ -61,6 +62,7 @@ architecture comp of lcd_dma_controller is
 	signal draw_buffer_size    : std_logic_vector(master_address'range);
 
 	signal master_address_s :  std_logic_vector(master_address'range);
+	signal next_master_address_s :  std_logic_vector(master_address'range);
 
 	signal is_write : std_logic;
 	signal is_read : std_logic;
@@ -74,6 +76,7 @@ architecture comp of lcd_dma_controller is
 
 	type dma_state_t is (
 		DMA_IDLE,
+		DMA_FETCH_PIXEL,
 		DMA_READ_PIXEL,
 		DMA_SEND_PIXEL_START,
 		DMA_SEND_PIXEL,
@@ -144,7 +147,15 @@ begin
 		end if;
 	end process;
 
-	register_read: process(is_read)
+	register_read: process(
+		is_read,
+		cpu_address,
+		test_register_s,
+		draw_buffer_address,
+		draw_buffer_size,
+		irq_enable_s,
+		irq_s,
+		lcd_cpu_cs)
 	begin
 		cpu_read_data <= (others => '0');
 		if is_read = '1' then
@@ -153,6 +164,10 @@ begin
 				when "001" => cpu_read_data <= test_register_s;
 				when "100" => cpu_read_data <= draw_buffer_address;
 				when "101" => cpu_read_data <= draw_buffer_size;
+				when "110" => 
+					cpu_read_data(0) <= irq_enable_s;
+					cpu_read_data(1) <= irq_s;
+				when "111" => cpu_read_data(0) <= lcd_cpu_cs;
 				when others => cpu_read_data <= x"deadbeef";
 			end case;
 		end if;
@@ -165,8 +180,12 @@ begin
 			curr_lcd_state <= LCD_IDLE;
 			curr_dma_state <= DMA_IDLE;
 			i <= (others => '0');
+			lcd_data_dma_s <= (others => '0');
+			master_address_s <= (others => '0');
 		elsif rising_edge(clk) then
+			master_address_s <= next_master_address_s;
 			curr_lcd_state <= next_lcd_state;
+			lcd_data_dma_s <= next_lcd_data_dma_s;
 			curr_dma_state <= next_dma_state;
 			i <= next_i;
 			if clk_counter_rst_s = '1' then
@@ -186,14 +205,15 @@ begin
 		lcd_data_dma_s, 
 		master_address_s, 
 		draw_buffer_address,
-		irq_ack_s
+		irq_ack_s,
+		draw_buffer_size
 	)
 	begin
 		next_dma_state <= curr_dma_state;
-		master_address_s <= master_address_s;
+		next_master_address_s <= master_address_s;
 		master_read <= '0';
 		start_dma_write <= '0';
-		lcd_data_dma_s <= lcd_data_dma_s;
+		next_lcd_data_dma_s <= lcd_data_dma_s;
 		lcd_ncd_dma_s <= '1';
 		next_i <= i;
 		irq_s <= '0';
@@ -201,16 +221,18 @@ begin
 		case curr_dma_state is
 			when DMA_IDLE => 
 				next_i <= (others => '0');
-				lcd_data_dma_s <= (others => '0');
-				master_address_s <= draw_buffer_address;
+				next_lcd_data_dma_s <= (others => '0');
+				next_master_address_s <= draw_buffer_address;
 				if start_dma_transaction = '1' then
-					master_read <= '1';
-					next_dma_state <= DMA_READ_PIXEL;
-					lcd_dma_cs <= '1';
+					next_dma_state <= DMA_FETCH_PIXEL;
 				end if;
+			when DMA_FETCH_PIXEL => 
+				master_read <= '1';
+				next_dma_state <= DMA_READ_PIXEL;
 			when DMA_READ_PIXEL => 
-				lcd_data_dma_s <= master_read_data;
 				lcd_dma_cs <= '1';
+				next_lcd_data_dma_s <= master_read_data;
+				master_read <= master_wait_request;
 				if master_wait_request = '0' then
 					next_dma_state <= DMA_SEND_PIXEL_START;
 					start_dma_write <= '1';
@@ -219,9 +241,9 @@ begin
 			when DMA_SEND_PIXEL_START => 
 				lcd_dma_cs <= '1';
 				next_dma_state <= DMA_SEND_PIXEL;
+				next_master_address_s <= std_logic_vector(unsigned(draw_buffer_address) + i);
 			when DMA_SEND_PIXEL => 
 				lcd_dma_cs <= '1';
-				master_address_s <= std_logic_vector(unsigned(draw_buffer_address) + i);
 				if next_lcd_state = LCD_IDLE then
 					if i = unsigned(draw_buffer_size) then
 						next_dma_state <= DMA_FINISH;
