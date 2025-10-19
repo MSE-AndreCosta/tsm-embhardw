@@ -69,8 +69,8 @@ architecture rtl of lcd_controller_tb is
   ---------------------------------------------------------------------------------------
   -- test selection, only _one_ test selection allowed!
   ---------------------------------------------------------------------------------------
-  constant LCD_WRITE_TEST       : boolean                       := true;
-  constant LCD_DMA_TEST         : boolean                       := false;
+  constant LCD_WRITE_TEST       : boolean                       := false;
+  constant LCD_DMA_TEST         : boolean                       := true;
 
   ---------------------------------------------------------------------------------------
   -- signals to and from design under test (dut)
