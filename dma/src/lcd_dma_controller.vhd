@@ -113,7 +113,7 @@ begin
 	is_control_reg_access <= '1' when is_write = '1' and cpu_address(2 downto 0) = "110" else '0';
 
 	start_dma_transaction <= '1' when is_control_reg_access = '1' and cpu_write_data(0) = '1' else '0';
-	irq_ack_s <= '1' when is_control_reg_access = '1' and cpu_write_data(0) = '1' else '0';
+	irq_ack_s <= '1' when is_control_reg_access = '1' and cpu_write_data(2) = '1' else '0';
 
 	register_write: process(clk, reset) begin
 		if reset = '1' then
@@ -137,8 +137,7 @@ begin
 					when "100" =>  draw_buffer_address <= cpu_write_data;
 					when "101" =>  draw_buffer_size <= cpu_write_data;
 					when "110" =>  
-						irq_enable_s <= cpu_write_data(0);
-						
+						irq_enable_s <= cpu_write_data(1);
 					when "111" =>  
 						lcd_cpu_cs <= cpu_write_data(0);
 					when others => null;
@@ -165,8 +164,8 @@ begin
 				when "100" => cpu_read_data <= draw_buffer_address;
 				when "101" => cpu_read_data <= draw_buffer_size;
 				when "110" => 
-					cpu_read_data(0) <= irq_enable_s;
-					cpu_read_data(1) <= irq_s;
+					cpu_read_data(1) <= irq_enable_s;
+					cpu_read_data(2) <= irq_s;
 				when "111" => cpu_read_data(0) <= lcd_cpu_cs;
 				when others => cpu_read_data <= x"deadbeef";
 			end case;
