@@ -19,3 +19,4 @@ lab01/lcd_interface_hw.tcl~
 lab01/sim
 lab01/software/*bsp
 dma/sim/output
+dma/dma

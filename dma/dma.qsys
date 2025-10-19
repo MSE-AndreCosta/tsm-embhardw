@@ -6,7 +6,7 @@
    version="1.0"
    description=""
    tags=""
-   categories="System" />
+   categories="" />
  <parameter name="bonusData"><![CDATA[bonusData 
 {
    element clk_0
@@ -45,7 +45,7 @@
    {
       datum baseAddress
       {
-         value = "33558640";
+         value = "33558624";
          type = "String";
       }
    }
@@ -53,7 +53,7 @@
    {
       datum _sortIndex
       {
-         value = "9";
+         value = "8";
          type = "int";
       }
    }
@@ -61,7 +61,7 @@
    {
       datum baseAddress
       {
-         value = "33558528";
+         value = "33558592";
          type = "String";
       }
    }
@@ -69,7 +69,7 @@
    {
       datum _sortIndex
       {
-         value = "7";
+         value = "6";
          type = "int";
       }
    }
@@ -85,7 +85,7 @@
    {
       datum _sortIndex
       {
-         value = "8";
+         value = "7";
          type = "int";
       }
    }
@@ -93,7 +93,7 @@
    {
       datum baseAddress
       {
-         value = "33558624";
+         value = "33558640";
          type = "String";
       }
    }
@@ -103,22 +103,6 @@
       {
          value = "3";
          type = "int";
-      }
-   }
-   element qsys_sysid
-   {
-      datum _sortIndex
-      {
-         value = "5";
-         type = "int";
-      }
-   }
-   element qsys_sysid.control_slave
-   {
-      datum baseAddress
-      {
-         value = "33558632";
-         type = "String";
       }
    }
    element sdram_controller
@@ -137,11 +121,27 @@
          type = "String";
       }
    }
+   element sysid_qsys_0
+   {
+      datum _sortIndex
+      {
+         value = "5";
+         type = "int";
+      }
+   }
+   element sysid_qsys_0.control_slave
+   {
+      datum baseAddress
+      {
+         value = "33558632";
+         type = "String";
+      }
+   }
    element timer_0
    {
       datum _sortIndex
       {
-         value = "6";
+         value = "9";
          type = "int";
       }
    }
@@ -149,63 +149,7 @@
    {
       datum baseAddress
       {
-         value = "33558592";
-         type = "String";
-      }
-   }
-   element toolssystem
-   {
-      datum _originalDeviceFamily
-      {
-         value = "Cyclone IV E";
-         type = "String";
-      }
-   }
-   element toolssystem
-   {
-      datum _originalDeviceFamily
-      {
-         value = "Cyclone IV E";
-         type = "String";
-      }
-   }
-   element toolssystem
-   {
-      datum _originalDeviceFamily
-      {
-         value = "Cyclone IV E";
-         type = "String";
-      }
-   }
-   element toolssystem
-   {
-      datum _originalDeviceFamily
-      {
-         value = "Cyclone IV E";
-         type = "String";
-      }
-   }
-   element toolssystem
-   {
-      datum _originalDeviceFamily
-      {
-         value = "Cyclone IV E";
-         type = "String";
-      }
-   }
-   element toolssystem
-   {
-      datum _originalDeviceFamily
-      {
-         value = "Cyclone IV E";
-         type = "String";
-      }
-   }
-   element toolssystem
-   {
-      datum _originalDeviceFamily
-      {
-         value = "Cyclone IV E";
+         value = "33558528";
          type = "String";
       }
    }
@@ -230,7 +174,7 @@
  <parameter name="timeStamp" value="0" />
  <parameter name="useTestBenchNamingPattern" value="false" />
  <instanceScript></instanceScript>
- <interface name="clk_i" internal="clk_0.clk_in" type="clock" dir="end" />
+ <interface name="clk" internal="clk_0.clk_in" type="clock" dir="end" />
  <interface
    name="lcd_dma_controller_0_conduit_end"
    internal="lcd_dma_controller_0.conduit_end"
@@ -251,7 +195,7 @@
    internal="pll.sdram_clk"
    type="clock"
    dir="start" />
- <interface name="reset_i" internal="clk_0.clk_in_reset" type="reset" dir="end" />
+ <interface name="reset" internal="clk_0.clk_in_reset" type="reset" dir="end" />
  <interface
    name="sdram_controller_wire"
    internal="sdram_controller.wire"
@@ -264,8 +208,8 @@
   <parameter name="resetSynchronousEdges" value="NONE" />
  </module>
  <module name="cpu" kind="altera_nios2_gen2" version="18.1" enabled="1">
-  <parameter name="AUTO_CLK_CLOCK_DOMAIN" value="6" />
-  <parameter name="AUTO_CLK_RESET_DOMAIN" value="6" />
+  <parameter name="AUTO_CLK_CLOCK_DOMAIN" value="5" />
+  <parameter name="AUTO_CLK_RESET_DOMAIN" value="5" />
   <parameter name="AUTO_DEVICE" value="EP4CE30F23C7" />
   <parameter name="AUTO_DEVICE_SPEEDGRADE" value="7" />
   <parameter name="bht_ramBlockType" value="Automatic" />
@@ -283,7 +227,7 @@
   <parameter name="dataAddrWidth" value="26" />
   <parameter name="dataMasterHighPerformanceAddrWidth" value="1" />
   <parameter name="dataMasterHighPerformanceMapParam" value="" />
-  <parameter name="dataSlaveMapParam"><![CDATA[<address-map><slave name='sdram_controller.s1' start='0x1000000' end='0x2000000' type='altera_avalon_new_sdram_controller.s1' /><slave name='cpu.debug_mem_slave' start='0x2000800' end='0x2001000' type='altera_nios2_gen2.debug_mem_slave' /><slave name='lcd_dma_controller_0.avalon_slave' start='0x2001000' end='0x2001020' type='lcd_dma_controller.avalon_slave' /><slave name='parallel_port_0.avalon_slave_0' start='0x2001020' end='0x2001040' type='parallel_port.avalon_slave_0' /><slave name='timer_0.s1' start='0x2001040' end='0x2001060' type='altera_avalon_timer.s1' /><slave name='parallel_port_1.avalon_slave_0' start='0x2001060' end='0x2001068' type='parallel_port.avalon_slave_0' /><slave name='qsys_sysid.control_slave' start='0x2001068' end='0x2001070' type='altera_avalon_sysid_qsys.control_slave' /><slave name='jtag_uart.avalon_jtag_slave' start='0x2001070' end='0x2001078' type='altera_avalon_jtag_uart.avalon_jtag_slave' /></address-map>]]></parameter>
+  <parameter name="dataSlaveMapParam"><![CDATA[<address-map><slave name='sdram_controller.s1' start='0x1000000' end='0x2000000' type='altera_avalon_new_sdram_controller.s1' /><slave name='cpu.debug_mem_slave' start='0x2000800' end='0x2001000' type='altera_nios2_gen2.debug_mem_slave' /><slave name='timer_0.s1' start='0x2001000' end='0x2001020' type='altera_avalon_timer.s1' /><slave name='parallel_port_0.avalon_slave_0' start='0x2001020' end='0x2001040' type='parallel_port.avalon_slave_0' /><slave name='lcd_dma_controller_0.avalon_slave' start='0x2001040' end='0x2001060' type='lcd_dma_controller.avalon_slave' /><slave name='jtag_uart.avalon_jtag_slave' start='0x2001060' end='0x2001068' type='altera_avalon_jtag_uart.avalon_jtag_slave' /><slave name='sysid_qsys_0.control_slave' start='0x2001068' end='0x2001070' type='altera_avalon_sysid_qsys.control_slave' /><slave name='parallel_port_1.avalon_slave_0' start='0x2001070' end='0x2001078' type='parallel_port.avalon_slave_0' /></address-map>]]></parameter>
   <parameter name="data_master_high_performance_paddr_base" value="0" />
   <parameter name="data_master_high_performance_paddr_size" value="0" />
   <parameter name="data_master_paddr_base" value="0" />
@@ -490,13 +434,6 @@
   <parameter name="other_boards" value="None" />
  </module>
  <module
-   name="qsys_sysid"
-   kind="altera_avalon_sysid_qsys"
-   version="18.1"
-   enabled="1">
-  <parameter name="id" value="-1515870811" />
- </module>
- <module
    name="sdram_controller"
    kind="altera_avalon_new_sdram_controller"
    version="18.1"
@@ -525,6 +462,13 @@
   <parameter name="registerDataIn" value="true" />
   <parameter name="rowWidth" value="12" />
  </module>
+ <module
+   name="sysid_qsys_0"
+   kind="altera_avalon_sysid_qsys"
+   version="18.1"
+   enabled="1">
+  <parameter name="id" value="-1515870811" />
+ </module>
  <module name="timer_0" kind="altera_avalon_timer" version="18.1" enabled="1">
   <parameter name="alwaysRun" value="false" />
   <parameter name="counterSize" value="32" />
@@ -552,7 +496,7 @@
    start="cpu.data_master"
    end="jtag_uart.avalon_jtag_slave">
   <parameter name="arbitrationPriority" value="1" />
-  <parameter name="baseAddress" value="0x02001070" />
+  <parameter name="baseAddress" value="0x02001060" />
   <parameter name="defaultConnection" value="false" />
  </connection>
  <connection
@@ -561,7 +505,16 @@
    start="cpu.data_master"
    end="lcd_dma_controller_0.avalon_slave">
   <parameter name="arbitrationPriority" value="1" />
-  <parameter name="baseAddress" value="0x02001000" />
+  <parameter name="baseAddress" value="0x02001040" />
+  <parameter name="defaultConnection" value="false" />
+ </connection>
+ <connection
+   kind="avalon"
+   version="18.1"
+   start="cpu.data_master"
+   end="parallel_port_1.avalon_slave_0">
+  <parameter name="arbitrationPriority" value="1" />
+  <parameter name="baseAddress" value="0x02001070" />
   <parameter name="defaultConnection" value="false" />
  </connection>
  <connection
@@ -577,16 +530,7 @@
    kind="avalon"
    version="18.1"
    start="cpu.data_master"
-   end="parallel_port_1.avalon_slave_0">
-  <parameter name="arbitrationPriority" value="1" />
-  <parameter name="baseAddress" value="0x02001060" />
-  <parameter name="defaultConnection" value="false" />
- </connection>
- <connection
-   kind="avalon"
-   version="18.1"
-   start="cpu.data_master"
-   end="qsys_sysid.control_slave">
+   end="sysid_qsys_0.control_slave">
   <parameter name="arbitrationPriority" value="1" />
   <parameter name="baseAddress" value="0x02001068" />
   <parameter name="defaultConnection" value="false" />
@@ -611,7 +555,7 @@
  </connection>
  <connection kind="avalon" version="18.1" start="cpu.data_master" end="timer_0.s1">
   <parameter name="arbitrationPriority" value="1" />
-  <parameter name="baseAddress" value="0x02001040" />
+  <parameter name="baseAddress" value="0x02001000" />
   <parameter name="defaultConnection" value="false" />
  </connection>
  <connection
@@ -633,14 +577,18 @@
   <parameter name="defaultConnection" value="false" />
  </connection>
  <connection kind="clock" version="18.1" start="clk_0.clk" end="pll.ref_clk" />
- <connection kind="clock" version="18.1" start="pll.sys_clk" end="cpu.clk" />
- <connection kind="clock" version="18.1" start="pll.sys_clk" end="qsys_sysid.clk" />
- <connection kind="clock" version="18.1" start="pll.sys_clk" end="jtag_uart.clk" />
  <connection
    kind="clock"
    version="18.1"
    start="pll.sys_clk"
    end="sdram_controller.clk" />
+ <connection kind="clock" version="18.1" start="pll.sys_clk" end="cpu.clk" />
+ <connection kind="clock" version="18.1" start="pll.sys_clk" end="jtag_uart.clk" />
+ <connection
+   kind="clock"
+   version="18.1"
+   start="pll.sys_clk"
+   end="sysid_qsys_0.clk" />
  <connection kind="clock" version="18.1" start="pll.sys_clk" end="timer_0.clk" />
  <connection
    kind="clock"
@@ -662,90 +610,45 @@
    version="18.1"
    start="cpu.irq"
    end="lcd_dma_controller_0.interrupt_sender">
-  <parameter name="irqNumber" value="2" />
- </connection>
- <connection kind="interrupt" version="18.1" start="cpu.irq" end="jtag_uart.irq">
   <parameter name="irqNumber" value="0" />
  </connection>
- <connection kind="interrupt" version="18.1" start="cpu.irq" end="timer_0.irq">
+ <connection kind="interrupt" version="18.1" start="cpu.irq" end="jtag_uart.irq">
   <parameter name="irqNumber" value="1" />
+ </connection>
+ <connection kind="interrupt" version="18.1" start="cpu.irq" end="timer_0.irq">
+  <parameter name="irqNumber" value="2" />
  </connection>
  <connection
    kind="reset"
    version="18.1"
    start="clk_0.clk_reset"
    end="pll.ref_reset" />
- <connection
-   kind="reset"
-   version="18.1"
-   start="cpu.debug_reset_request"
-   end="qsys_sysid.reset" />
- <connection
-   kind="reset"
-   version="18.1"
-   start="cpu.debug_reset_request"
-   end="cpu.reset" />
- <connection
-   kind="reset"
-   version="18.1"
-   start="cpu.debug_reset_request"
-   end="sdram_controller.reset" />
- <connection
-   kind="reset"
-   version="18.1"
-   start="cpu.debug_reset_request"
-   end="jtag_uart.reset" />
- <connection
-   kind="reset"
-   version="18.1"
-   start="cpu.debug_reset_request"
-   end="timer_0.reset" />
- <connection
-   kind="reset"
-   version="18.1"
-   start="cpu.debug_reset_request"
-   end="lcd_dma_controller_0.reset" />
- <connection
-   kind="reset"
-   version="18.1"
-   start="cpu.debug_reset_request"
-   end="parallel_port_1.reset_sink" />
- <connection
-   kind="reset"
-   version="18.1"
-   start="cpu.debug_reset_request"
-   end="parallel_port_0.reset_sink" />
- <connection
-   kind="reset"
-   version="18.1"
-   start="pll.reset_source"
-   end="pll.ref_reset" />
- <connection
-   kind="reset"
-   version="18.1"
-   start="pll.reset_source"
-   end="qsys_sysid.reset" />
- <connection
-   kind="reset"
-   version="18.1"
-   start="pll.reset_source"
-   end="jtag_uart.reset" />
- <connection
-   kind="reset"
-   version="18.1"
-   start="pll.reset_source"
-   end="sdram_controller.reset" />
  <connection kind="reset" version="18.1" start="pll.reset_source" end="cpu.reset" />
  <connection
    kind="reset"
    version="18.1"
    start="pll.reset_source"
-   end="timer_0.reset" />
+   end="sdram_controller.reset" />
+ <connection
+   kind="reset"
+   version="18.1"
+   start="pll.reset_source"
+   end="jtag_uart.reset" />
+ <connection
+   kind="reset"
+   version="18.1"
+   start="pll.reset_source"
+   end="sysid_qsys_0.reset" />
  <connection
    kind="reset"
    version="18.1"
    start="pll.reset_source"
    end="lcd_dma_controller_0.reset" />
+ <connection
+   kind="reset"
+   version="18.1"
+   start="pll.reset_source"
+   end="timer_0.reset" />
  <connection
    kind="reset"
    version="18.1"
