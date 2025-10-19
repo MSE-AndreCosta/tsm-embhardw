@@ -9,28 +9,12 @@
    categories="System" />
  <parameter name="bonusData"><![CDATA[bonusData 
 {
-   element ParallelPort_0
-   {
-      datum _sortIndex
-      {
-         value = "7";
-         type = "int";
-      }
-   }
    element ParallelPort_0.avalon_slave_0
    {
       datum baseAddress
       {
          value = "33558560";
          type = "String";
-      }
-   }
-   element ParallelPort_1
-   {
-      datum _sortIndex
-      {
-         value = "8";
-         type = "int";
       }
    }
    element ParallelPort_1.avalon_slave_0
@@ -77,11 +61,11 @@
    {
       datum baseAddress
       {
-         value = "33558624";
+         value = "33558640";
          type = "String";
       }
    }
-   element lcd_interface_0
+   element lcd_dma_controller_0
    {
       datum _sortIndex
       {
@@ -89,11 +73,51 @@
          type = "int";
       }
    }
+   element lcd_dma_controller_0.avalon_slave
+   {
+      datum baseAddress
+      {
+         value = "33558528";
+         type = "String";
+      }
+   }
    element lcd_interface_0.avalon_slave_0
    {
       datum baseAddress
       {
          value = "33558592";
+         type = "String";
+      }
+   }
+   element parallel_port_0
+   {
+      datum _sortIndex
+      {
+         value = "7";
+         type = "int";
+      }
+   }
+   element parallel_port_0.avalon_slave_0
+   {
+      datum baseAddress
+      {
+         value = "33558560";
+         type = "String";
+      }
+   }
+   element parallel_port_1
+   {
+      datum _sortIndex
+      {
+         value = "8";
+         type = "int";
+      }
+   }
+   element parallel_port_1.avalon_slave_0
+   {
+      datum baseAddress
+      {
+         value = "33558624";
          type = "String";
       }
    }
@@ -117,7 +141,7 @@
    {
       datum baseAddress
       {
-         value = "33558608";
+         value = "33558632";
          type = "String";
       }
    }
@@ -149,7 +173,7 @@
    {
       datum baseAddress
       {
-         value = "33558528";
+         value = "33558592";
          type = "String";
       }
    }
@@ -223,7 +247,7 @@
  <parameter name="hideFromIPCatalog" value="false" />
  <parameter name="lockedInterfaceDefinition" value="" />
  <parameter name="maxAdditionalLatency" value="1" />
- <parameter name="projectName" value="tools.qpf" />
+ <parameter name="projectName" value="" />
  <parameter name="sopcBorderPoints" value="false" />
  <parameter name="systemHash" value="0" />
  <parameter name="testBenchDutName" value="" />
@@ -232,18 +256,18 @@
  <instanceScript></instanceScript>
  <interface name="clk_i" internal="clk_0.clk_in" type="clock" dir="end" />
  <interface
-   name="lcd_interface_0_conduit_end"
-   internal="lcd_interface_0.conduit_end"
+   name="lcd_dma_controller_0_conduit_end"
+   internal="lcd_dma_controller_0.conduit_end"
    type="conduit"
    dir="end" />
  <interface
-   name="parallelport_0_conduit_end"
-   internal="ParallelPort_0.conduit_end"
+   name="parallel_port_0_conduit_end"
+   internal="parallel_port_0.conduit_end"
    type="conduit"
    dir="end" />
  <interface
-   name="parallelport_1_conduit_end"
-   internal="ParallelPort_1.conduit_end"
+   name="parallel_port_1_conduit_end"
+   internal="parallel_port_1.conduit_end"
    type="conduit"
    dir="end" />
  <interface
@@ -257,12 +281,6 @@
    internal="sdram_controller.wire"
    type="conduit"
    dir="end" />
- <module name="ParallelPort_0" kind="ParallelPort" version="1.0" enabled="1">
-  <parameter name="N" value="32" />
- </module>
- <module name="ParallelPort_1" kind="ParallelPort" version="1.0" enabled="1">
-  <parameter name="N" value="8" />
- </module>
  <module name="clk_0" kind="clock_source" version="18.1" enabled="1">
   <parameter name="clockFrequency" value="50000000" />
   <parameter name="clockFrequencyKnown" value="true" />
@@ -289,7 +307,7 @@
   <parameter name="dataAddrWidth" value="26" />
   <parameter name="dataMasterHighPerformanceAddrWidth" value="1" />
   <parameter name="dataMasterHighPerformanceMapParam" value="" />
-  <parameter name="dataSlaveMapParam"><![CDATA[<address-map><slave name='sdram_controller.s1' start='0x1000000' end='0x2000000' type='altera_avalon_new_sdram_controller.s1' /><slave name='cpu.debug_mem_slave' start='0x2000800' end='0x2001000' type='altera_nios2_gen2.debug_mem_slave' /><slave name='timer_0.s1' start='0x2001000' end='0x2001020' type='altera_avalon_timer.s1' /><slave name='ParallelPort_0.avalon_slave_0' start='0x2001020' end='0x2001040' type='ParallelPort.avalon_slave_0' /><slave name='lcd_interface_0.avalon_slave_0' start='0x2001040' end='0x2001050' type='lcd_interface.avalon_slave_0' /><slave name='qsys_sysid.control_slave' start='0x2001050' end='0x2001058' type='altera_avalon_sysid_qsys.control_slave' /><slave name='ParallelPort_1.avalon_slave_0' start='0x2001058' end='0x2001060' type='ParallelPort.avalon_slave_0' /><slave name='jtag_uart.avalon_jtag_slave' start='0x2001060' end='0x2001068' type='altera_avalon_jtag_uart.avalon_jtag_slave' /></address-map>]]></parameter>
+  <parameter name="dataSlaveMapParam"><![CDATA[<address-map><slave name='sdram_controller.s1' start='0x1000000' end='0x2000000' type='altera_avalon_new_sdram_controller.s1' /><slave name='cpu.debug_mem_slave' start='0x2000800' end='0x2001000' type='altera_nios2_gen2.debug_mem_slave' /><slave name='lcd_dma_controller_0.avalon_slave' start='0x2001000' end='0x2001020' type='lcd_dma_controller.avalon_slave' /><slave name='parallel_port_0.avalon_slave_0' start='0x2001020' end='0x2001040' type='parallel_port.avalon_slave_0' /><slave name='timer_0.s1' start='0x2001040' end='0x2001060' type='altera_avalon_timer.s1' /><slave name='parallel_port_1.avalon_slave_0' start='0x2001060' end='0x2001068' type='parallel_port.avalon_slave_0' /><slave name='qsys_sysid.control_slave' start='0x2001068' end='0x2001070' type='altera_avalon_sysid_qsys.control_slave' /><slave name='jtag_uart.avalon_jtag_slave' start='0x2001070' end='0x2001078' type='altera_avalon_jtag_uart.avalon_jtag_slave' /></address-map>]]></parameter>
   <parameter name="data_master_high_performance_paddr_base" value="0" />
   <parameter name="data_master_high_performance_paddr_size" value="0" />
   <parameter name="data_master_paddr_base" value="0" />
@@ -335,7 +353,7 @@
   <parameter name="instruction_master_high_performance_paddr_size" value="0" />
   <parameter name="instruction_master_paddr_base" value="0" />
   <parameter name="instruction_master_paddr_size" value="0" />
-  <parameter name="internalIrqMaskSystemInfo" value="3" />
+  <parameter name="internalIrqMaskSystemInfo" value="7" />
   <parameter name="io_regionbase" value="0" />
   <parameter name="io_regionsize" value="0" />
   <parameter name="master_addr_map" value="false" />
@@ -466,8 +484,18 @@
   <parameter name="writeBufferDepth" value="64" />
   <parameter name="writeIRQThreshold" value="8" />
  </module>
- <module name="lcd_interface_0" kind="lcd_interface" version="1.0" enabled="1">
+ <module
+   name="lcd_dma_controller_0"
+   kind="lcd_dma_controller"
+   version="1.0"
+   enabled="1">
   <parameter name="N" value="16" />
+ </module>
+ <module name="parallel_port_0" kind="parallel_port" version="1.0" enabled="1">
+  <parameter name="N" value="32" />
+ </module>
+ <module name="parallel_port_1" kind="parallel_port" version="1.0" enabled="1">
+  <parameter name="N" value="8" />
  </module>
  <module
    name="pll"
@@ -536,17 +564,35 @@
  <connection
    kind="avalon"
    version="18.1"
-   start="cpu.data_master"
-   end="jtag_uart.avalon_jtag_slave">
+   start="lcd_dma_controller_0.avalon_master"
+   end="sdram_controller.s1">
   <parameter name="arbitrationPriority" value="1" />
-  <parameter name="baseAddress" value="0x02001060" />
+  <parameter name="baseAddress" value="0x01000000" />
   <parameter name="defaultConnection" value="false" />
  </connection>
  <connection
    kind="avalon"
    version="18.1"
    start="cpu.data_master"
-   end="ParallelPort_0.avalon_slave_0">
+   end="jtag_uart.avalon_jtag_slave">
+  <parameter name="arbitrationPriority" value="1" />
+  <parameter name="baseAddress" value="0x02001070" />
+  <parameter name="defaultConnection" value="false" />
+ </connection>
+ <connection
+   kind="avalon"
+   version="18.1"
+   start="cpu.data_master"
+   end="lcd_dma_controller_0.avalon_slave">
+  <parameter name="arbitrationPriority" value="1" />
+  <parameter name="baseAddress" value="0x02001000" />
+  <parameter name="defaultConnection" value="false" />
+ </connection>
+ <connection
+   kind="avalon"
+   version="18.1"
+   start="cpu.data_master"
+   end="parallel_port_0.avalon_slave_0">
   <parameter name="arbitrationPriority" value="1" />
   <parameter name="baseAddress" value="0x02001020" />
   <parameter name="defaultConnection" value="false" />
@@ -555,18 +601,9 @@
    kind="avalon"
    version="18.1"
    start="cpu.data_master"
-   end="ParallelPort_1.avalon_slave_0">
+   end="parallel_port_1.avalon_slave_0">
   <parameter name="arbitrationPriority" value="1" />
-  <parameter name="baseAddress" value="0x02001058" />
-  <parameter name="defaultConnection" value="false" />
- </connection>
- <connection
-   kind="avalon"
-   version="18.1"
-   start="cpu.data_master"
-   end="lcd_interface_0.avalon_slave_0">
-  <parameter name="arbitrationPriority" value="1" />
-  <parameter name="baseAddress" value="0x02001040" />
+  <parameter name="baseAddress" value="0x02001060" />
   <parameter name="defaultConnection" value="false" />
  </connection>
  <connection
@@ -575,7 +612,7 @@
    start="cpu.data_master"
    end="qsys_sysid.control_slave">
   <parameter name="arbitrationPriority" value="1" />
-  <parameter name="baseAddress" value="0x02001050" />
+  <parameter name="baseAddress" value="0x02001068" />
   <parameter name="defaultConnection" value="false" />
  </connection>
  <connection
@@ -598,7 +635,7 @@
  </connection>
  <connection kind="avalon" version="18.1" start="cpu.data_master" end="timer_0.s1">
   <parameter name="arbitrationPriority" value="1" />
-  <parameter name="baseAddress" value="0x02001000" />
+  <parameter name="baseAddress" value="0x02001040" />
   <parameter name="defaultConnection" value="false" />
  </connection>
  <connection
@@ -633,17 +670,24 @@
    kind="clock"
    version="18.1"
    start="pll.sys_clk"
-   end="ParallelPort_0.clock" />
+   end="parallel_port_0.clock" />
  <connection
    kind="clock"
    version="18.1"
    start="pll.sys_clk"
-   end="ParallelPort_1.clock" />
+   end="parallel_port_1.clock" />
  <connection
    kind="clock"
    version="18.1"
    start="pll.sys_clk"
-   end="lcd_interface_0.clock" />
+   end="lcd_dma_controller_0.clock" />
+ <connection
+   kind="interrupt"
+   version="18.1"
+   start="cpu.irq"
+   end="lcd_dma_controller_0.interrupt_sender">
+  <parameter name="irqNumber" value="2" />
+ </connection>
  <connection kind="interrupt" version="18.1" start="cpu.irq" end="jtag_uart.irq">
   <parameter name="irqNumber" value="0" />
  </connection>
@@ -684,17 +728,17 @@
    kind="reset"
    version="18.1"
    start="cpu.debug_reset_request"
-   end="ParallelPort_0.reset_sink" />
+   end="lcd_dma_controller_0.reset" />
  <connection
    kind="reset"
    version="18.1"
    start="cpu.debug_reset_request"
-   end="ParallelPort_1.reset_sink" />
+   end="parallel_port_1.reset_sink" />
  <connection
    kind="reset"
    version="18.1"
    start="cpu.debug_reset_request"
-   end="lcd_interface_0.reset_sink" />
+   end="parallel_port_0.reset_sink" />
  <connection
    kind="reset"
    version="18.1"
@@ -725,17 +769,17 @@
    kind="reset"
    version="18.1"
    start="pll.reset_source"
-   end="ParallelPort_0.reset_sink" />
+   end="lcd_dma_controller_0.reset" />
  <connection
    kind="reset"
    version="18.1"
    start="pll.reset_source"
-   end="ParallelPort_1.reset_sink" />
+   end="parallel_port_0.reset_sink" />
  <connection
    kind="reset"
    version="18.1"
    start="pll.reset_source"
-   end="lcd_interface_0.reset_sink" />
+   end="parallel_port_1.reset_sink" />
  <interconnectRequirement for="$system" name="qsys_mm.clockCrossingAdapter" value="HANDSHAKE" />
  <interconnectRequirement for="$system" name="qsys_mm.enableEccProtection" value="FALSE" />
  <interconnectRequirement for="$system" name="qsys_mm.insertDefaultSlave" value="FALSE" />
