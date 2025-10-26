@@ -543,9 +543,14 @@ lcd_bus_monitor: process
       assert avm_address_s = std_logic_vector(expected_addr) report "AV dummy slave: wrong address" severity error;
       
       avm_readdata_s <= dma_access_cnt(15 downto 0);
+      avm_waitrequest_s <= '1';
       
+      wait for (CLK_PERIOD * 4) + 1 ns;
+      
+      avm_waitrequest_s <= '0';
+
       wait for CLK_PERIOD + 1 ns;
-      
+
       assert avm_read_s = '0' report "AV dummy slave: avm_read_s is still high" severity error;
       
       dma_access_cnt <= std_logic_vector(unsigned(dma_access_cnt) + 2);
