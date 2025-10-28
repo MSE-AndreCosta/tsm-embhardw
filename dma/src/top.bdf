@@ -409,7 +409,7 @@ refer to the applicable agreement for further details.
 		(pt 608 72)
 		(output)
 		(text "pll_sdram_clk_clk" (rect 0 0 101 13)(font "Arial" (font_size 8)))
-		(text "pll_sdram_clk_clk" (rect 519 61 620 74)(font "Arial" (font_size 8)))
+		(text "pll_sdram_clk_clk" (rect 519 61 604 74)(font "Arial" (font_size 8)))
 		(line (pt 608 72)(pt 336 72))
 	)
 	(port
