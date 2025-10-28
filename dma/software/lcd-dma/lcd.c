@@ -112,7 +112,7 @@ void lcd_init(void)
 	lcd_turn_on();
 
 	lcd_select();
-
+	tick = timer_get_tick();
 	while (timer_get_tick() - tick < 120)
 		;
 
