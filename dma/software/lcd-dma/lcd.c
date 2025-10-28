@@ -4,6 +4,7 @@
 #include "system.h"
 #include "io.h"
 #include "timer.h"
+#include <stdbool.h>
 #include <stdint.h>
 #include <stdio.h>
 
@@ -30,8 +31,18 @@
 #define LCD_DMA_CONTROLLER_0_IRQ 2
 #endif
 
+static void lcd_ack_transfer(void);
 static void lcd_write_data(uint16_t data);
 static void lcd_write_cmd(uint16_t cmd);
+static void lcd_dma_isr(void *context, alt_u32 id);
+
+static volatile bool is_transferring = false;
+
+static void lcd_dma_isr(void *context, alt_u32 id)
+{
+	is_transferring = false;
+	lcd_ack_transfer();
+}
 
 static inline void lcd_write_cmd(uint16_t cmd)
 {
@@ -109,7 +120,7 @@ void lcd_init(void)
 		while (1)
 			;
 	}
-
+	lcd_ack_transfer();
 	lcd_turn_off();
 	tick = timer_get_tick();
 	while (timer_get_tick() - tick < 120)
@@ -206,6 +217,8 @@ void lcd_init(void)
 	/* Display ON */
 	lcd_write_cmd(0x0029);
 	lcd_unselect();
+
+	alt_irq_register(LCD_DMA_CONTROLLER_0_IRQ, NULL, lcd_dma_isr);
 
 	lcd_enable_irq();
 }
