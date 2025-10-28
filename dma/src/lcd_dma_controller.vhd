@@ -231,7 +231,7 @@ begin
 			when DMA_READ_PIXEL => 
 				lcd_dma_cs <= '1';
 				next_lcd_data_dma_s <= master_read_data;
-				master_read <= master_wait_request;
+				master_read <= '1';
 				if master_wait_request = '0' then
 					next_dma_state <= DMA_SEND_PIXEL_START;
 					start_dma_write <= '1';
