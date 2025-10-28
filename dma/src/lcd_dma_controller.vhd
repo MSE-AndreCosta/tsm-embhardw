@@ -196,7 +196,7 @@ begin
 	end process fsm_reg;
 
 	process(curr_dma_state,
-		curr_lcd_state,
+		next_lcd_state,
 		start_dma_transaction,
 		master_wait_request,
 		master_read_data,
@@ -243,7 +243,7 @@ begin
 				next_master_address_s <= std_logic_vector(unsigned(draw_buffer_address) + i);
 			when DMA_SEND_PIXEL => 
 				lcd_dma_cs <= '1';
-				if curr_lcd_state = LCD_IDLE then
+				if next_lcd_state = LCD_IDLE then
 					if i >= unsigned(draw_buffer_size) then
 						next_dma_state <= DMA_FINISH;
 					else 
