@@ -24,6 +24,12 @@
 #define LCD_IM0_MASK		  0x20
 #define LCD_NRESET_MASK		  0x40
 
+#if LCD_DMA_CONTROLLER_0_IRQ == -1
+#warning LCD_DMA_CONTROLLER_0_IRQ == -1
+#undef LCD_DMA_CONTROLLER_0_IRQ
+#define LCD_DMA_CONTROLLER_0_IRQ 2
+#endif
+
 static void lcd_write_data(uint16_t data);
 static void lcd_write_cmd(uint16_t cmd);
 
