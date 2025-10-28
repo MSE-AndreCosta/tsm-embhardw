@@ -288,8 +288,6 @@ begin
 		    when LCD_FINISH_WRITE => 
 			lcd_wr <= '0';
 			if twr = '1' then 
-				-- Adding this line, the cpu_wait_request signal is only set to 1 for 3 clock cycles which
-				-- can mean the CPU unsets the CS line too early for the LCD
 				cpu_wait_request <= '0'; 
 				next_lcd_state <= LCD_IDLE;
 			end if;
