@@ -6,7 +6,7 @@
    version="1.0"
    description=""
    tags=""
-   categories="" />
+   categories="System" />
  <parameter name="bonusData"><![CDATA[bonusData 
 {
    element clk_0
@@ -33,6 +33,22 @@
          type = "String";
       }
    }
+   element dma
+   {
+      datum _originalDeviceFamily
+      {
+         value = "Cyclone IV E";
+         type = "String";
+      }
+   }
+   element dma
+   {
+      datum _originalDeviceFamily
+      {
+         value = "Cyclone IV E";
+         type = "String";
+      }
+   }
    element jtag_uart
    {
       datum _sortIndex
@@ -45,7 +61,7 @@
    {
       datum baseAddress
       {
-         value = "33558624";
+         value = "33558640";
          type = "String";
       }
    }
@@ -53,7 +69,7 @@
    {
       datum _sortIndex
       {
-         value = "8";
+         value = "9";
          type = "int";
       }
    }
@@ -61,7 +77,7 @@
    {
       datum baseAddress
       {
-         value = "33558592";
+         value = "33558528";
          type = "String";
       }
    }
@@ -77,7 +93,7 @@
    {
       datum baseAddress
       {
-         value = "33558560";
+         value = "33558592";
          type = "String";
       }
    }
@@ -93,7 +109,7 @@
    {
       datum baseAddress
       {
-         value = "33558640";
+         value = "33558632";
          type = "String";
       }
    }
@@ -133,7 +149,7 @@
    {
       datum baseAddress
       {
-         value = "33558632";
+         value = "33558624";
          type = "String";
       }
    }
@@ -141,7 +157,7 @@
    {
       datum _sortIndex
       {
-         value = "9";
+         value = "8";
          type = "int";
       }
    }
@@ -149,7 +165,7 @@
    {
       datum baseAddress
       {
-         value = "33558528";
+         value = "33558560";
          type = "String";
       }
    }
@@ -167,7 +183,7 @@
  <parameter name="hideFromIPCatalog" value="false" />
  <parameter name="lockedInterfaceDefinition" value="" />
  <parameter name="maxAdditionalLatency" value="1" />
- <parameter name="projectName" value="" />
+ <parameter name="projectName" value="lcd-dma.qpf" />
  <parameter name="sopcBorderPoints" value="false" />
  <parameter name="systemHash" value="0" />
  <parameter name="testBenchDutName" value="" />
@@ -227,7 +243,7 @@
   <parameter name="dataAddrWidth" value="26" />
   <parameter name="dataMasterHighPerformanceAddrWidth" value="1" />
   <parameter name="dataMasterHighPerformanceMapParam" value="" />
-  <parameter name="dataSlaveMapParam"><![CDATA[<address-map><slave name='sdram_controller.s1' start='0x1000000' end='0x2000000' type='altera_avalon_new_sdram_controller.s1' /><slave name='cpu.debug_mem_slave' start='0x2000800' end='0x2001000' type='altera_nios2_gen2.debug_mem_slave' /><slave name='timer_0.s1' start='0x2001000' end='0x2001020' type='altera_avalon_timer.s1' /><slave name='parallel_port_0.avalon_slave_0' start='0x2001020' end='0x2001040' type='parallel_port.avalon_slave_0' /><slave name='lcd_dma_controller_0.avalon_slave' start='0x2001040' end='0x2001060' type='lcd_dma_controller.avalon_slave' /><slave name='jtag_uart.avalon_jtag_slave' start='0x2001060' end='0x2001068' type='altera_avalon_jtag_uart.avalon_jtag_slave' /><slave name='sysid_qsys_0.control_slave' start='0x2001068' end='0x2001070' type='altera_avalon_sysid_qsys.control_slave' /><slave name='parallel_port_1.avalon_slave_0' start='0x2001070' end='0x2001078' type='parallel_port.avalon_slave_0' /></address-map>]]></parameter>
+  <parameter name="dataSlaveMapParam"><![CDATA[<address-map><slave name='sdram_controller.s1' start='0x1000000' end='0x2000000' type='altera_avalon_new_sdram_controller.s1' /><slave name='cpu.debug_mem_slave' start='0x2000800' end='0x2001000' type='altera_nios2_gen2.debug_mem_slave' /><slave name='lcd_dma_controller_0.avalon_slave' start='0x2001000' end='0x2001020' type='lcd_dma_controller.avalon_slave' /><slave name='timer_0.s1' start='0x2001020' end='0x2001040' type='altera_avalon_timer.s1' /><slave name='parallel_port_0.avalon_slave_0' start='0x2001040' end='0x2001060' type='parallel_port.avalon_slave_0' /><slave name='sysid_qsys_0.control_slave' start='0x2001060' end='0x2001068' type='altera_avalon_sysid_qsys.control_slave' /><slave name='parallel_port_1.avalon_slave_0' start='0x2001068' end='0x2001070' type='parallel_port.avalon_slave_0' /><slave name='jtag_uart.avalon_jtag_slave' start='0x2001070' end='0x2001078' type='altera_avalon_jtag_uart.avalon_jtag_slave' /></address-map>]]></parameter>
   <parameter name="data_master_high_performance_paddr_base" value="0" />
   <parameter name="data_master_high_performance_paddr_size" value="0" />
   <parameter name="data_master_paddr_base" value="0" />
@@ -496,7 +512,7 @@
    start="cpu.data_master"
    end="jtag_uart.avalon_jtag_slave">
   <parameter name="arbitrationPriority" value="1" />
-  <parameter name="baseAddress" value="0x02001060" />
+  <parameter name="baseAddress" value="0x02001070" />
   <parameter name="defaultConnection" value="false" />
  </connection>
  <connection
@@ -505,7 +521,7 @@
    start="cpu.data_master"
    end="lcd_dma_controller_0.avalon_slave">
   <parameter name="arbitrationPriority" value="1" />
-  <parameter name="baseAddress" value="0x02001040" />
+  <parameter name="baseAddress" value="0x02001000" />
   <parameter name="defaultConnection" value="false" />
  </connection>
  <connection
@@ -514,7 +530,7 @@
    start="cpu.data_master"
    end="parallel_port_1.avalon_slave_0">
   <parameter name="arbitrationPriority" value="1" />
-  <parameter name="baseAddress" value="0x02001070" />
+  <parameter name="baseAddress" value="0x02001068" />
   <parameter name="defaultConnection" value="false" />
  </connection>
  <connection
@@ -523,7 +539,7 @@
    start="cpu.data_master"
    end="parallel_port_0.avalon_slave_0">
   <parameter name="arbitrationPriority" value="1" />
-  <parameter name="baseAddress" value="0x02001020" />
+  <parameter name="baseAddress" value="0x02001040" />
   <parameter name="defaultConnection" value="false" />
  </connection>
  <connection
@@ -532,7 +548,7 @@
    start="cpu.data_master"
    end="sysid_qsys_0.control_slave">
   <parameter name="arbitrationPriority" value="1" />
-  <parameter name="baseAddress" value="0x02001068" />
+  <parameter name="baseAddress" value="0x02001060" />
   <parameter name="defaultConnection" value="false" />
  </connection>
  <connection
@@ -555,7 +571,7 @@
  </connection>
  <connection kind="avalon" version="18.1" start="cpu.data_master" end="timer_0.s1">
   <parameter name="arbitrationPriority" value="1" />
-  <parameter name="baseAddress" value="0x02001000" />
+  <parameter name="baseAddress" value="0x02001020" />
   <parameter name="defaultConnection" value="false" />
  </connection>
  <connection
@@ -610,13 +626,13 @@
    version="18.1"
    start="cpu.irq"
    end="lcd_dma_controller_0.interrupt_sender">
-  <parameter name="irqNumber" value="0" />
+  <parameter name="irqNumber" value="2" />
  </connection>
  <connection kind="interrupt" version="18.1" start="cpu.irq" end="jtag_uart.irq">
-  <parameter name="irqNumber" value="1" />
+  <parameter name="irqNumber" value="0" />
  </connection>
  <connection kind="interrupt" version="18.1" start="cpu.irq" end="timer_0.irq">
-  <parameter name="irqNumber" value="2" />
+  <parameter name="irqNumber" value="1" />
  </connection>
  <connection
    kind="reset"
@@ -643,12 +659,12 @@
    kind="reset"
    version="18.1"
    start="pll.reset_source"
-   end="lcd_dma_controller_0.reset" />
+   end="timer_0.reset" />
  <connection
    kind="reset"
    version="18.1"
    start="pll.reset_source"
-   end="timer_0.reset" />
+   end="lcd_dma_controller_0.reset" />
  <connection
    kind="reset"
    version="18.1"

@@ -21,7 +21,7 @@ refer to the applicable agreement for further details.
 (header "graphic" (version "1.4"))
 (pin
 	(input)
-	(rect 328 120 496 136)
+	(rect 336 120 504 136)
 	(text "INPUT" (rect 125 0 153 10)(font "Arial" (font_size 6)))
 	(text "Clk_50M" (rect 5 0 48 11)(font "Arial" ))
 	(pt 168 8)
@@ -34,7 +34,7 @@ refer to the applicable agreement for further details.
 		(line (pt 109 12)(pt 113 8))
 	)
 	(text "VCC" (rect 128 7 148 17)(font "Arial" (font_size 6)))
-	(annotation_block (location)(rect 200 120 256 136))
+	(annotation_block (location)(rect 208 120 264 136))
 )
 (pin
 	(input)
@@ -234,7 +234,7 @@ refer to the applicable agreement for further details.
 )
 (pin
 	(output)
-	(rect 328 208 504 224)
+	(rect 328 176 504 192)
 	(text "OUTPUT" (rect 137 0 175 10)(font "Arial" (font_size 6)))
 	(text "LCD_D_Cn" (rect 5 0 58 13)(font "Intel Clear" ))
 	(pt 176 8)
@@ -248,7 +248,7 @@ refer to the applicable agreement for further details.
 		(line (pt 98 12)(pt 94 8))
 	)
 	(flipy)
-	(annotation_block (location)(rect 128 208 192 224))
+	(annotation_block (location)(rect 128 176 192 192))
 )
 (pin
 	(output)
@@ -270,7 +270,7 @@ refer to the applicable agreement for further details.
 )
 (pin
 	(output)
-	(rect 328 176 504 192)
+	(rect 328 208 504 224)
 	(text "OUTPUT" (rect 137 0 175 10)(font "Arial" (font_size 6)))
 	(text "LCD_WRn" (rect 5 0 54 13)(font "Intel Clear" ))
 	(pt 176 8)
@@ -284,7 +284,7 @@ refer to the applicable agreement for further details.
 		(line (pt 98 12)(pt 94 8))
 	)
 	(flipy)
-	(annotation_block (location)(rect 128 176 192 192))
+	(annotation_block (location)(rect 128 208 192 224))
 )
 (pin
 	(output)
@@ -409,7 +409,7 @@ refer to the applicable agreement for further details.
 		(pt 608 72)
 		(output)
 		(text "pll_sdram_clk_clk" (rect 0 0 101 13)(font "Arial" (font_size 8)))
-		(text "pll_sdram_clk_clk" (rect 519 61 604 74)(font "Arial" (font_size 8)))
+		(text "pll_sdram_clk_clk" (rect 519 61 620 74)(font "Arial" (font_size 8)))
 		(line (pt 608 72)(pt 336 72))
 	)
 	(port
@@ -603,8 +603,8 @@ refer to the applicable agreement for further details.
 	(pt 520 352)
 )
 (connector
-	(pt 496 128)
-	(pt 520 128)
+	(pt 1128 128)
+	(pt 1160 128)
 )
 (connector
 	(pt 520 168)
@@ -628,6 +628,6 @@ refer to the applicable agreement for further details.
 	(pt 504 232)
 )
 (connector
-	(pt 1128 128)
-	(pt 1160 128)
+	(pt 504 128)
+	(pt 520 128)
 )
