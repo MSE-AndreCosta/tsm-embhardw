@@ -254,6 +254,7 @@ begin
 			when DMA_FINISH => 
 				irq_s <= '1';
 				if irq_ack_s = '1' then
+					irq_s <= '0';
 					next_dma_state <= DMA_IDLE;
 				end if;
 		end case;
