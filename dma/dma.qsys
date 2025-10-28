@@ -107,6 +107,11 @@
    }
    element parallel_port_1.avalon_slave_0
    {
+      datum _tags
+      {
+         value = "";
+         type = "String";
+      }
       datum baseAddress
       {
          value = "33558632";
@@ -224,8 +229,8 @@
   <parameter name="resetSynchronousEdges" value="NONE" />
  </module>
  <module name="cpu" kind="altera_nios2_gen2" version="18.1" enabled="1">
-  <parameter name="AUTO_CLK_CLOCK_DOMAIN" value="5" />
-  <parameter name="AUTO_CLK_RESET_DOMAIN" value="5" />
+  <parameter name="AUTO_CLK_CLOCK_DOMAIN" value="6" />
+  <parameter name="AUTO_CLK_RESET_DOMAIN" value="6" />
   <parameter name="AUTO_DEVICE" value="EP4CE30F23C7" />
   <parameter name="AUTO_DEVICE_SPEEDGRADE" value="7" />
   <parameter name="bht_ramBlockType" value="Automatic" />
@@ -489,7 +494,7 @@
   <parameter name="alwaysRun" value="false" />
   <parameter name="counterSize" value="32" />
   <parameter name="fixedPeriod" value="true" />
-  <parameter name="period" value="10" />
+  <parameter name="period" value="1" />
   <parameter name="periodUnits" value="MSEC" />
   <parameter name="resetOutput" value="false" />
   <parameter name="snapshot" value="true" />
@@ -621,13 +626,6 @@
    version="18.1"
    start="pll.sys_clk"
    end="lcd_dma_controller_0.clock" />
- <connection
-   kind="interrupt"
-   version="18.1"
-   start="cpu.irq"
-   end="lcd_dma_controller_0.interrupt_sender">
-  <parameter name="irqNumber" value="2" />
- </connection>
  <connection kind="interrupt" version="18.1" start="cpu.irq" end="jtag_uart.irq">
   <parameter name="irqNumber" value="0" />
  </connection>
@@ -635,9 +633,66 @@
   <parameter name="irqNumber" value="1" />
  </connection>
  <connection
+   kind="interrupt"
+   version="18.1"
+   start="cpu.irq"
+   end="lcd_dma_controller_0.irq">
+  <parameter name="irqNumber" value="2" />
+ </connection>
+ <connection
    kind="reset"
    version="18.1"
    start="clk_0.clk_reset"
+   end="pll.ref_reset" />
+ <connection
+   kind="reset"
+   version="18.1"
+   start="cpu.debug_reset_request"
+   end="pll.ref_reset" />
+ <connection
+   kind="reset"
+   version="18.1"
+   start="cpu.debug_reset_request"
+   end="cpu.reset" />
+ <connection
+   kind="reset"
+   version="18.1"
+   start="cpu.debug_reset_request"
+   end="jtag_uart.reset" />
+ <connection
+   kind="reset"
+   version="18.1"
+   start="cpu.debug_reset_request"
+   end="sdram_controller.reset" />
+ <connection
+   kind="reset"
+   version="18.1"
+   start="cpu.debug_reset_request"
+   end="sysid_qsys_0.reset" />
+ <connection
+   kind="reset"
+   version="18.1"
+   start="cpu.debug_reset_request"
+   end="timer_0.reset" />
+ <connection
+   kind="reset"
+   version="18.1"
+   start="cpu.debug_reset_request"
+   end="lcd_dma_controller_0.reset" />
+ <connection
+   kind="reset"
+   version="18.1"
+   start="cpu.debug_reset_request"
+   end="parallel_port_0.reset_sink" />
+ <connection
+   kind="reset"
+   version="18.1"
+   start="cpu.debug_reset_request"
+   end="parallel_port_1.reset_sink" />
+ <connection
+   kind="reset"
+   version="18.1"
+   start="pll.reset_source"
    end="pll.ref_reset" />
  <connection kind="reset" version="18.1" start="pll.reset_source" end="cpu.reset" />
  <connection
