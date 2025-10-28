@@ -222,15 +222,28 @@ void lcd_init(void)
 
 	lcd_enable_irq();
 }
-
-void lcd_write(const uint16_t *buffer, uint32_t size)
+bool lcd_can_write(void)
 {
+	return !is_transferring;
+}
+void lcd_write_direct(const uint16_t *buffer, uint32_t size)
+{
+	lcd_select();
 	lcd_write_cmd(0x002c);
+
+	uint32_t pixel_count = size / 2;
+	for (uint32_t i = 0; i < pixel_count; ++i) {
+		lcd_write_data(buffer[i]);
+	}
+	lcd_unselect();
+}
+void lcd_write_async(const uint16_t *buffer, uint32_t size)
+{
+	lcd_select();
+	lcd_write_cmd(0x002c);
+
 	lcd_set_buffer_address((uint32_t)buffer);
 	lcd_set_buffer_size(size);
-	//lcd_start_dma_transfer();
-//
-//	for (uint32_t i = 0; i < size / 2; ++i) {
-//		lcd_write_data(buffer[i]);
-//	}
+	is_transferring = true;
+	lcd_start_dma_transfer();
 }
