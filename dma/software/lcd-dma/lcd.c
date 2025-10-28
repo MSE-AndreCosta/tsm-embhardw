@@ -241,6 +241,7 @@ void lcd_write_async(const uint16_t *buffer, uint32_t size)
 {
 	lcd_select();
 	lcd_write_cmd(0x002c);
+	lcd_unselect();
 
 	lcd_set_buffer_address((uint32_t)buffer);
 	lcd_set_buffer_size(size);
