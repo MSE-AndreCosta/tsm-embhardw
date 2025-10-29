@@ -1,25 +1,31 @@
 Unit is ms
 
-Direct Mode:
-Finished rendering: 6443
-Finished flushing: 6606 (+163)
-Finished rendering: 6606
-Finished flushing: 6769 (+163)
-Finished rendering: 6770
-Finished flushing: 6932 (+162)
-Finished rendering: 6933
+CPU Write:
 
-DMA Mode:
-Finished flushing: 12508 (+91)
-Finished rendering: 12508
-Finished flushing: 12599 (+91)
-Finished rendering: 12599
-Finished flushing: 12691 (+92)
-Finished rendering: 12691
-Finished flushing: 12782 (+91)
-Finished rendering: 12782
-Finished flushing: 12873 (+91)
-Finished rendering: 12874
-Finished flushing: 12965 (+91)
-Finished rendering: 12965
-Finished flushing: 13056 (+91)
+Direct CPU write took 98
+Direct CPU write took 96
+Direct CPU write took 96
+Direct CPU write took 96
+Direct CPU write took 96
+Direct CPU write took 96
+Direct CPU write took 96
+Direct CPU write took 96
+Direct CPU write took 96
+Direct CPU write took 96
+Average direct cpu write 96
+
+Async flush:
+
+Async Flush took 23
+Async Flush took 23
+Async Flush took 23
+Async Flush took 23
+Async Flush took 23
+Async Flush took 23
+Async Flush took 23
+Async Flush took 23
+Async Flush took 23
+Async Flush took 23
+Async Flush took 23
+Async Flush took 23
+Async Flush took 23
