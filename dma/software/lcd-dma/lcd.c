@@ -37,10 +37,11 @@ static void lcd_write_cmd(uint16_t cmd);
 static void lcd_dma_isr(void *context, alt_u32 id);
 
 static volatile bool is_transferring = false;
-
+static volatile uint32_t isr_tick;
 static void lcd_dma_isr(void *context, alt_u32 id)
 {
 	is_transferring = false;
+	isr_tick = timer_get_tick();
 	lcd_ack_transfer();
 }
 
@@ -228,6 +229,7 @@ bool lcd_can_write(void)
 }
 void lcd_write_direct(const uint16_t *buffer, uint32_t size)
 {
+	uint32_t start = timer_get_tick();
 	lcd_select();
 	lcd_write_cmd(0x002c);
 
@@ -236,6 +238,7 @@ void lcd_write_direct(const uint16_t *buffer, uint32_t size)
 		lcd_write_data(buffer[i]);
 	}
 	lcd_unselect();
+
 }
 void lcd_write_async(const uint16_t *buffer, uint32_t size)
 {
@@ -247,4 +250,8 @@ void lcd_write_async(const uint16_t *buffer, uint32_t size)
 	lcd_set_buffer_size(size);
 	is_transferring = true;
 	lcd_start_dma_transfer();
+}
+uint32_t lcd_get_isr_tick(void)
+{
+	return isr_tick;
 }

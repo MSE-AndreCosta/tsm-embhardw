@@ -14,4 +14,5 @@ void lcd_start_dma_transfer(void);
 bool lcd_can_write(void);
 void lcd_write_direct(const uint16_t *buffer, uint32_t size);
 void lcd_write_async(const uint16_t *buffer, uint32_t size);
+uint32_t lcd_get_isr_tick(void);
 #endif /*LCD_H*/

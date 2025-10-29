@@ -42,14 +42,24 @@ int main()
 	state_t state = RENDERING;
 	uint32_t last_tick;
 
-
+	uint32_t sum = 0;
+	for(size_t i = 0; i < 10; ++i)
+	{
+		uint32_t start = timer_get_tick();
+		lcd_write_direct(draw_buffer, LCD_WIDTH * LCD_HEIGHT * sizeof(*draw_buffer));
+		uint32_t end = timer_get_tick();
+		printf("Direct CPU write took %d\n", end - start);
+		sum += end - start;
+	}
+	printf("Average direct cpu write %d\n", sum / 10);
+	uint32_t start = 0;
 	while (1) {
 		uint32_t tick = timer_get_tick();
 		IOWR_32DIRECT(PARALLEL_PORT_0_BASE, 0x8, tick);
 		switch(state)
 		{
 		case RENDERING:
-			for (size_t i = 0; i < LCD_WIDTH * LCD_HEIGHT; ++i) {
+																																																																																												for (size_t i = 0; i < LCD_WIDTH * LCD_HEIGHT; ++i) {
 			    if(draw_buffer[i] == 0xF800)
 			    {
 			    	draw_buffer[i] = 0x00F8;
@@ -60,12 +70,13 @@ int main()
 			}
 			last_tick = tick;
 			printf("Finished rendering: %u\n", last_tick);
+			start = timer_get_tick();
 			lcd_write_async(draw_buffer, LCD_WIDTH * LCD_HEIGHT * sizeof(*draw_buffer));
 			state = FLUSHING;
 			break;
 		case FLUSHING:
 			if(lcd_can_write()){
-				printf("Finished flushing: %u (+%u)\n", tick, tick - last_tick);
+				printf("Async Flush took %d\n", lcd_get_isr_tick() - start);
 				state = RENDERING;
 			}
 			break;
