@@ -1,3 +1,6 @@
 [submodule "dma/software/lcd-lvgl/lvgl"]
 	path = dma/software/lcd-lvgl/lvgl
 	url = git@github.com:lvgl/lvgl.git
+[submodule "dma/software/lvgl"]
+	path = dma/software/lvgl
+	url = git@github.com:lvgl/lvgl.git
