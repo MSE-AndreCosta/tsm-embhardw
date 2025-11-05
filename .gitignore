@@ -20,5 +20,5 @@ lab01/sim
 lab01/software/*bsp
 dma/sim/output
 dma/dma
-dma/software/lcd-dma_bsp
 dma/qsys/*.tcl*
+dma/software/lcd-dma-bsp
