@@ -177,15 +177,14 @@ void sobel_y_with_rgb(unsigned char *source)
 void sobel_threshold(short threshold)
 {
 	int x, y, arrayindex;
-	short sum, value;
 	for (y = 1; y < (sobel_height - 1); y++) {
 		for (x = 1; x < (sobel_width - 1); x++) {
 			arrayindex = (y * sobel_width) + x;
-			value = sobel_x_result[arrayindex];
-			sum = (value < 0) ? -value : value;
-			value = sobel_y_result[arrayindex];
-			sum += (value < 0) ? -value : value;
-			sobel_result[arrayindex] = (sum > threshold) ? 0xFF : 0;
+			short x = sobel_x_result[arrayindex];
+			x = x > 0 ? x : -x;
+			short y = sobel_y_result[arrayindex];
+			y = y > 0 ? y : -y;
+			sobel_result[arrayindex] = (x + y > threshold) ? 0xFF : 0;
 		}
 	}
 }
