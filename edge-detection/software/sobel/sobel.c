@@ -21,6 +21,7 @@ int sobel_height;
 
 void init_sobel_arrays(int width, int height)
 {
+	printf("Init sobel arrays %dx%d. Pixel Count = %d", width, height, width * height);
 	int loop;
 	sobel_width = width;
 	sobel_height = height;
