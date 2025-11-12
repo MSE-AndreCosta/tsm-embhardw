@@ -95,8 +95,11 @@ int main()
 		default:
 			MEASURE(conv_grayscale, (void *)image, cam_get_xsize() >> 1, cam_get_ysize());
 			grayscale = get_grayscale_picture();
+#if 0
 			MEASURE(sobel_x, grayscale);
 			MEASURE(sobel_y, grayscale);
+#endif
+			MEASURE(sobel_complete, grayscale);
 			MEASURE(sobel_threshold, 128);
 			grayscale = GetSobelResult();
 			transfer_LCD_with_dma(&grayscale[16520], cam_get_xsize() >> 1, cam_get_ysize(), 1);
