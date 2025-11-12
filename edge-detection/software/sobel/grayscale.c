@@ -29,13 +29,11 @@ void conv_grayscale(void *picture, int width, int height)
 	grayscale_width = width;
 	grayscape_height = height;
 
+	unsigned idx = 0;
 	for (y = 0; y < height; y++) {
 		for (x = 0; x < width; x++) {
-			rgb = pixels[y * width + x];
-			gray = (((rgb >> 11) & 0x1F) << 3) * 21; // red part
-			gray += (((rgb >> 5) & 0x3F) << 2) * 72; // green part
-			gray += (((rgb >> 0) & 0x1F) << 3) * 7; // blue part
-			gray >>= 7;
+			rgb = pixels[idx++];
+			gray = ((rgb >> 5) & 0x3F) << 2; // green part
 			IOWR_8DIRECT(grayscale_array, y * width + x, gray);
 		}
 	}
