@@ -198,3 +198,13 @@ that are consumed when entering a function, these clock cycles are negligeable s
 | conv_grayscale  | 2419      |
 | sobel_complete  | 8673      |
 | sobel_threshold | 2045      |
+
+## Grayscale approximation
+
+**-O0**
+
+| Function        | Time (ms) |
+|-----------------|-----------|
+| conv_grayscale  | 1995      |
+| sobel_complete  | 8660      |
+| sobel_threshold | 2050      |
