@@ -140,3 +140,15 @@ Une fois cela, j'ai du faire le portage de LVGL, le code source est disponible a
 | sobel_threshold | 621       |
 
 
+## Loop Unrolling - Inner loop in `sobel_mac`
+
+**-O0**
+
+| Function        | Time (ms) |
+|-----------------|-----------|
+| conv_grayscale  | 2445      |
+| sobel_x         | 10840     |
+| sobel_y         | 10880     |
+| sobel_threshold | 2062      |
+
+**-O0**
