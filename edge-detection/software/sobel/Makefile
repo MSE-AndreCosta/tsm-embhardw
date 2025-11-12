@@ -120,7 +120,7 @@ endif # COMSPEC
 #vvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvv
 
 #START GENERATED
-ACTIVE_BUILD_CONFIG := o2
+ACTIVE_BUILD_CONFIG := default
 BUILD_CONFIGS += default
 BUILD_CONFIGS += o1
 BUILD_CONFIGS += o2
