@@ -13,6 +13,15 @@
 #include "sys/alt_timestamp.h"
 #include "alt_types.h"
 
+#define MEASURE(fn, ...)                                                                              \
+	do {                                                                                          \
+		printf("Calling %s\n", #fn);                                                          \
+		alt_u32 start = alt_timestamp() / (alt_timestamp_freq() / 1000);                      \
+		fn(__VA_ARGS__);                                                                      \
+		alt_u32 end = alt_timestamp() / (alt_timestamp_freq() / 1000);                        \
+		printf("Function %s took: %lu ms - %lu ms = %lu ms\n", #fn, end, start, end - start); \
+	} while (0);
+
 int main()
 {
 	init_LCD();
@@ -30,6 +39,7 @@ int main()
 	cam_set_image_pointer(3, buffer4);
 	enable_continues_mode();
 	init_sobel_arrays(cam_get_xsize() >> 1, cam_get_ysize());
+	alt_timestamp_start();
 	while (1) {
 		if (!new_image_available()) {
 			continue;
@@ -41,6 +51,7 @@ int main()
 		const uint8_t mode = current_mode & (DIPSW_SW1_MASK | DIPSW_SW3_MASK | DIPSW_SW2_MASK);
 		uint16_t *image = (uint16_t *)current_image_pointer();
 		uint8_t *grayscale = NULL;
+		printf("Mode is %d %lu\n", mode, alt_timestamp() / alt_timestamp_freq());
 		switch (mode) {
 		case 0:
 			transfer_LCD_with_dma(&image[16520], cam_get_xsize() >> 1, cam_get_ysize(), 0);
@@ -50,7 +61,7 @@ int main()
 			}
 			break;
 		case 1:
-			conv_grayscale((void *)image, cam_get_xsize() >> 1, cam_get_ysize());
+			MEASURE(conv_grayscale, (void *)image, cam_get_xsize() >> 1, cam_get_ysize());
 			grayscale = get_grayscale_picture();
 			transfer_LCD_with_dma(&grayscale[16520], cam_get_xsize() >> 1, cam_get_ysize(), 1);
 			if ((current_mode & DIPSW_SW8_MASK) != 0) {
@@ -59,7 +70,7 @@ int main()
 			}
 			break;
 		case 2:
-			conv_grayscale((void *)image, cam_get_xsize() >> 1, cam_get_ysize());
+			MEASURE(conv_grayscale, (void *)image, cam_get_xsize() >> 1, cam_get_ysize());
 			grayscale = get_grayscale_picture();
 			sobel_x_with_rgb(grayscale);
 			image = GetSobel_rgb();
@@ -70,9 +81,9 @@ int main()
 			}
 			break;
 		case 3:
-			conv_grayscale((void *)image, cam_get_xsize() >> 1, cam_get_ysize());
+			MEASURE(conv_grayscale, (void *)image, cam_get_xsize() >> 1, cam_get_ysize());
 			grayscale = get_grayscale_picture();
-			sobel_x(grayscale);
+			MEASURE(sobel_x, grayscale);
 			sobel_y_with_rgb(grayscale);
 			image = GetSobel_rgb();
 			transfer_LCD_with_dma(&image[16520], cam_get_xsize() >> 1, cam_get_ysize(), 0);
@@ -82,11 +93,11 @@ int main()
 			}
 			break;
 		default:
-			conv_grayscale((void *)image, cam_get_xsize() >> 1, cam_get_ysize());
+			MEASURE(conv_grayscale, (void *)image, cam_get_xsize() >> 1, cam_get_ysize());
 			grayscale = get_grayscale_picture();
-			sobel_x(grayscale);
-			sobel_y(grayscale);
-			sobel_threshold(128);
+			MEASURE(sobel_x, grayscale);
+			MEASURE(sobel_y, grayscale);
+			MEASURE(sobel_threshold, 128);
 			grayscale = GetSobelResult();
 			transfer_LCD_with_dma(&grayscale[16520], cam_get_xsize() >> 1, cam_get_ysize(), 1);
 			if ((current_mode & DIPSW_SW8_MASK) != 0) {
