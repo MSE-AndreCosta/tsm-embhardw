@@ -39,8 +39,9 @@ int main()
 	cam_set_image_pointer(3, buffer4);
 	enable_continues_mode();
 	init_sobel_arrays(cam_get_xsize() >> 1, cam_get_ysize());
-	alt_timestamp_start();
+
 	while (1) {
+		alt_timestamp_start();
 		if (!new_image_available()) {
 			continue;
 		}
