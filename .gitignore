@@ -22,3 +22,11 @@ dma/sim/output
 dma/dma
 dma/qsys/*.tcl*
 dma/software/lcd-dma-bsp
+edge-detection/quartus_project/base_system/synthesis
+edge-detection/quartus_project/base_system
+edge-detection/quartus_project/mse_demo.qsf
+edge-detection/quartus_project/mse_demo.qws
+edge-detection/software/sobel-bsp
+edge-detection/software/sobel/.settings
+edge-detection/software/sobel/.project
+edge-detection/software/sobel/.cproject
