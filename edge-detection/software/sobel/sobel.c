@@ -86,7 +86,8 @@ void sobel_x_with_rgb(unsigned char *source)
 
 	for (y = 1; y < (sobel_height - 1); y++) {
 		for (x = 1; x < (sobel_width - 1); x++) {
-			result = sobel_mac(source, x, y, gx_array, sobel_width);
+			result = sobel_mac(source, x, y, (const char *)gx_array, sobel_width);
+
 			sobel_x_result[y * sobel_width + x] = result;
 			if (result < 0) {
 				sobel_rgb565[y * sobel_width + x] = ((-result) >> 2) << 5;
@@ -124,7 +125,7 @@ void sobel_y_with_rgb(unsigned char *source)
 
 	for (y = 1; y < (sobel_height - 1); y++) {
 		for (x = 1; x < (sobel_width - 1); x++) {
-			result = sobel_mac(source, x, y, gy_array, sobel_width);
+			result = sobel_mac(source, x, y, (const char *)gy_array, sobel_width);
 			sobel_y_result[y * sobel_width + x] = result;
 			if (result < 0) {
 				sobel_rgb565[y * sobel_width + x] = ((-result) >> 2) << 5;
