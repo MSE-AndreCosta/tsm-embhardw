@@ -162,3 +162,15 @@ Une fois cela, j'ai du faire le portage de LVGL, le code source est disponible a
 | sobel_x         | 8382      |
 | sobel_y         | 8357      |
 | sobel_threshold | 2041      |
+
+
+## Inline `sobel_mac`
+
+**-O0**
+
+| Function        | Time (ms) |
+|-----------------|-----------|
+| conv_grayscale  | 2419      |
+| sobel_x         | 8171      |
+| sobel_y         | 8167      |
+| sobel_threshold | 2045      |
