@@ -64,7 +64,7 @@ void sobel_complete(unsigned char *pixels)
 	const char *filter = (const char *)gx_array;
 
 	for (y = 1; y < (sobel_height - 1); y++) {
-		for (x = 1; x < (sobel_width - 1); x++) {
+		for (x = 1; x < (sobel_width - 2); x += 2) {
 			short result = filter[0] * pixels[(y - 1) * sobel_width + (x - 1)];
 			result += filter[1] * pixels[(y - 1) * sobel_width + x];
 			result += filter[2] * pixels[(y - 1) * sobel_width + (x + 1)];
@@ -75,11 +75,12 @@ void sobel_complete(unsigned char *pixels)
 			result += filter[7] * pixels[(y + 1) * sobel_width + x];
 			result += filter[8] * pixels[(y + 1) * sobel_width + (x + 1)];
 			sobel_x_result[y * sobel_width + x] = result;
+			sobel_x_result[y * sobel_width + x + 1] = result;
 		}
 	}
 
 	for (y = 1; y < (sobel_height - 1); y++) {
-		for (x = 1; x < (sobel_width - 1); x++) {
+		for (x = 1; x < (sobel_width - 2); x += 2) {
 			short result = filter[0] * pixels[(y - 1) * sobel_width + (x - 1)];
 			result += filter[1] * pixels[(y - 1) * sobel_width + x];
 			result += filter[2] * pixels[(y - 1) * sobel_width + (x + 1)];
@@ -90,6 +91,7 @@ void sobel_complete(unsigned char *pixels)
 			result += filter[7] * pixels[(y + 1) * sobel_width + x];
 			result += filter[8] * pixels[(y + 1) * sobel_width + (x + 1)];
 			sobel_y_result[y * sobel_width + x] = result;
+			sobel_y_result[y * sobel_width + x + 1] = result;
 		}
 	}
 }

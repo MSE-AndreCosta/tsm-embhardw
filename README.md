@@ -188,3 +188,13 @@ Une fois cela, j'ai du faire le portage de LVGL, le code source est disponible a
 
 Performance stays the same. Merging `sobel_x` and `sobel_y` together allows us to save a couple of clock cycles 
 that are consumed when entering a function, these clock cycles are negligeable since these two functions are called only once.
+
+## Interpolation
+
+**-O0**
+
+| Function        | Time (ms) |
+|-----------------|-----------|
+| conv_grayscale  | 2419      |
+| sobel_complete  | 8673      |
+| sobel_threshold | 2045      |
