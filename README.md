@@ -97,3 +97,46 @@ comme un "Include Directory":
 Une fois cela, j'ai du faire le portage de LVGL, le code source est disponible aussi:
 
 ![](./media/lvgl-nios-ii.png)
+
+
+# Edge Detection
+
+## Starting Point
+
+**-O0**
+
+| Function        | Time (ms) |
+|-----------------|-----------|
+| conv_grayscale  | 2407      |
+| sobel_x         | 14483     |
+| sobel_y         | 14569     |
+| sobel_threshold | 2053      |
+
+**-O1**
+
+| Function        | Time (ms) |
+|-----------------|-----------|
+| conv_grayscale  | 744       |
+| sobel_x         | 2526      |
+| sobel_y         | 2525      |
+| sobel_threshold | 659       |
+
+**-O2**
+
+| Function        | Time (ms) |
+|-----------------|-----------|
+| conv_grayscale  | 667       |
+| sobel_x         | 2131      |
+| sobel_y         | 2132      |
+| sobel_threshold | 621       |
+
+**-O3**
+
+| Function        | Time (ms) |
+|-----------------|-----------|
+| conv_grayscale  | 722       |
+| sobel_x         | 575       |
+| sobel_y         | 528       |
+| sobel_threshold | 621       |
+
+
