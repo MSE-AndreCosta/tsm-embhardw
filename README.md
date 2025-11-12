@@ -219,3 +219,22 @@ that are consumed when entering a function, these clock cycles are negligeable s
 | sobel_complete  | 8660      |
 | sobel_threshold | 2050      |
 
+
+## Replace filter with hardcoded operations
+
+**-O0**
+
+| Function        | Time (ms) |
+|-----------------|-----------|
+| conv_grayscale  | 1271      |
+| sobel_complete  | 4029      |
+| sobel_threshold | 2050      |
+
+
+With these results, total compute time = 7.35 seconds
+
+Total Clock Cycles = 50Mhz * 7.35s = 367,500,000 clock cycles
+Pixel Count = 196,608
+
+Clock Cycles/Pixel = 1,869 cycles/pixel
+
