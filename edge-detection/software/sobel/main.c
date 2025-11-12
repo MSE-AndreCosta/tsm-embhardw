@@ -1,4 +1,5 @@
 #include <stdio.h>
+#include <stdint.h>
 #include <system.h>
 #include <stdlib.h>
 #include <io.h>
@@ -9,23 +10,20 @@
 #include "vga.h"
 #include "dipswitch.h"
 #include "sobel.h"
+#include "sys/alt_timestamp.h"
+#include "alt_types.h"
 
 int main()
 {
-	void *buffer1, *buffer2, *buffer3, *buffer4;
-	unsigned short *image;
-	unsigned char *grayscale;
-	unsigned char current_mode;
-	unsigned char mode;
 	init_LCD();
 	init_camera();
 	vga_set_swap(VGA_QuarterScreen | VGA_Grayscale);
 	printf("Hello from Nios II!\n");
 	cam_get_profiling();
-	buffer1 = (void *)malloc(cam_get_xsize() * cam_get_ysize());
-	buffer2 = (void *)malloc(cam_get_xsize() * cam_get_ysize());
-	buffer3 = (void *)malloc(cam_get_xsize() * cam_get_ysize());
-	buffer4 = (void *)malloc(cam_get_xsize() * cam_get_ysize());
+	void *buffer1 = malloc(cam_get_xsize() * cam_get_ysize());
+	void *buffer2 = malloc(cam_get_xsize() * cam_get_ysize());
+	void *buffer3 = malloc(cam_get_xsize() * cam_get_ysize());
+	void *buffer4 = malloc(cam_get_xsize() * cam_get_ysize());
 	cam_set_image_pointer(0, buffer1);
 	cam_set_image_pointer(1, buffer2);
 	cam_set_image_pointer(2, buffer3);
@@ -39,9 +37,10 @@ int main()
 		if (!current_image_valid()) {
 			continue;
 		}
-		current_mode = DIPSW_get_value();
-		mode = current_mode & (DIPSW_SW1_MASK | DIPSW_SW3_MASK | DIPSW_SW2_MASK);
-		image = (unsigned short *)current_image_pointer();
+		const uint8_t current_mode = DIPSW_get_value();
+		const uint8_t mode = current_mode & (DIPSW_SW1_MASK | DIPSW_SW3_MASK | DIPSW_SW2_MASK);
+		uint16_t *image = (uint16_t *)current_image_pointer();
+		uint8_t *grayscale = NULL;
 		switch (mode) {
 		case 0:
 			transfer_LCD_with_dma(&image[16520], cam_get_xsize() >> 1, cam_get_ysize(), 0);
