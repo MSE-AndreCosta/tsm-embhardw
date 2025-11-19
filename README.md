@@ -238,3 +238,34 @@ Pixel Count = 196,608
 
 Clock Cycles/Pixel = 1,869 cycles/pixel
 
+
+## Compute threshold in sobel_complete
+
+**-O0**
+
+| Function        | Time (ms) |
+|-----------------|-----------|
+| conv_grayscale  | 1274      |
+| sobel_complete  | 3751      |
+
+With these results, total compute time = 5.025 seconds
+
+Total Clock Cycles = 50Mhz * 5.05s = 251,250,000 clock cycles
+Pixel Count = 196,608
+
+Clock Cycles/Pixel = 1278 cycles/pixel
+
+**-O3**
+
+| Function        | Time (ms) |
+|-----------------|-----------|
+| conv_grayscale  | 246       |
+| sobel_complete  | 649       |
+
+With these results, total compute time = 0.895 seconds
+
+Total Clock Cycles = 50Mhz * 0.895s = 44,750,000 clock cycles
+Pixel Count = 196,608
+
+Clock Cycles/Pixel = 228 cycles/pixel
+
