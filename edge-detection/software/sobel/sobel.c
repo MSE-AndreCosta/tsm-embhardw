@@ -7,6 +7,7 @@
 
 #include <stdlib.h>
 #include <stdio.h>
+#include <stdint.h>
 #include "io.h"
 
 const char gx_array[3][3] = { { -1, 0, 1 }, { -2, 0, 2 }, { -1, 0, 1 } };
@@ -59,7 +60,7 @@ short sobel_mac(unsigned char *pixels, int x, int y, const char *filter, unsigne
 	return result;
 }
 
-void sobel_complete(unsigned char *pixels)
+void sobel_complete(unsigned char *pixels, short threshold)
 {
 	int x, y;
 
@@ -73,11 +74,9 @@ void sobel_complete(unsigned char *pixels)
 					 pixels[(y - 1) * sobel_width + (x + 1)] - pixels[(y + 1) * sobel_width + (x - 1)] -
 					 (pixels[(y + 1) * sobel_width + x] << 1) - pixels[(y + 1) * sobel_width + (x + 1)];
 
-			sobel_x_result[y * sobel_width + x] = x_result;
-			sobel_x_result[y * sobel_width + x + 1] = x_result;
-
-			sobel_y_result[y * sobel_width + x] = y_result;
-			sobel_y_result[y * sobel_width + x + 1] = y_result;
+			uint8_t result = (x_result + y_result > threshold) ? 0xFF : 0;
+			sobel_result[(y * sobel_width) + x] = result;
+			sobel_result[(y * sobel_width) + x + 1] = result;
 		}
 	}
 }

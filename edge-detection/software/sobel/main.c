@@ -100,8 +100,7 @@ int main()
 			MEASURE(sobel_x, grayscale);
 			MEASURE(sobel_y, grayscale);
 #endif
-			MEASURE(sobel_complete, grayscale);
-			MEASURE(sobel_threshold, 128);
+			MEASURE(sobel_complete, grayscale, 128);
 			grayscale = GetSobelResult();
 			transfer_LCD_with_dma(&grayscale[16520], cam_get_xsize() >> 1, cam_get_ysize(), 1);
 			if ((current_mode & DIPSW_SW8_MASK) != 0) {
