@@ -18,4 +18,7 @@ void sobel_complete(unsigned char *pixels, short threshold);
 unsigned short *GetSobel_rgb();
 unsigned char *GetSobelResult();
 
+void sobel_complete_chunk(unsigned char *pixels, int total_width, int total_height, int start_row, int rows_to_process,
+			  short threshold, unsigned char *output_buffer);
+
 #endif /* SOBEL_H_ */
