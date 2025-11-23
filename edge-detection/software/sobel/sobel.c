@@ -44,9 +44,11 @@ void init_sobel_arrays(int width, int height)
 		sobel_result[loop] = 0;
 		sobel_rgb565[loop] = 0;
 	}
+#if 0
 	printf("Sobel result array at %p\n", sobel_result);
 	sobel_result = (unsigned char *)((uintptr_t)sobel_result | (1U << 31));
 	printf("Sobel array at %p so we can bypass caching\n", sobel_result);
+#endif
 }
 
 short sobel_mac(unsigned char *pixels, int x, int y, const char *filter, unsigned int width)
