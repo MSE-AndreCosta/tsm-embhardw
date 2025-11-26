@@ -269,3 +269,18 @@ Pixel Count = 196,608
 
 Clock Cycles/Pixel = 228 cycles/pixel
 
+## Chunk-based with 16kB cache size
+
+**-O3**
+
+| Function        | Time (ms) |
+|-----------------|-----------|
+| conv + sobel    | 350       |
+
+With these results, total compute time = 0.350 seconds
+
+Total Clock Cycles = 50Mhz * 0.350s = 17,500,000 clock cycles
+Pixel Count = 196,608
+
+Clock Cycles/Pixel = 89 cycles/pixel
+

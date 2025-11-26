@@ -11,9 +11,9 @@
 #include <io.h>
 #include <system.h>
 
-unsigned char *grayscale_array;
-int grayscale_width = 0;
-int grayscape_height = 0;
+uint8_t *grayscale_array;
+uint32_t grayscale_width = 0;
+uint32_t grayscape_height = 0;
 
 void init_grayscale(int width, int height)
 {
@@ -45,19 +45,17 @@ void conv_grayscale(void *picture, int width, int height)
 	}
 }
 
-void conv_grayscale_chunk(void *picture, int width, int height, int start_row, int rows_to_process,
-			  unsigned char *output_buffer)
+void conv_grayscale_chunk(void *picture, uint32_t start_row, uint32_t row_count)
 {
-	int x, y, gray;
-	unsigned short *pixels = (unsigned short *)picture;
-	unsigned short rgb;
-	unsigned idx = 0;
-
-	for (y = 0; y < rows_to_process; y++) {
-		for (x = 0; x < width; x++) {
-			rgb = pixels[idx++];
-			gray = ((rgb >> 5) & 0x3F) << 2;
-			output_buffer[(start_row + y) * width + x] = gray;
+	uint16_t *pixels = (uint16_t *)picture;
+	const unsigned last_row = start_row + row_count;
+	uint32_t index = start_row * grayscale_width;
+	for (uint32_t y = start_row; y < last_row; y++) {
+		for (uint32_t x = 0; x < grayscale_width; x++) {
+			const uint16_t rgb = pixels[index];
+			const uint8_t gray = ((rgb >> 5) & 0x3F) << 2;
+			grayscale_array[index] = gray;
+			index++;
 		}
 	}
 }

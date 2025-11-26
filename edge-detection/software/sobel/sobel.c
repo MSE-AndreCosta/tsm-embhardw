@@ -44,11 +44,9 @@ void init_sobel_arrays(int width, int height)
 		sobel_result[loop] = 0;
 		sobel_rgb565[loop] = 0;
 	}
-#if 0
 	printf("Sobel result array at %p\n", sobel_result);
 	sobel_result = (unsigned char *)((uintptr_t)sobel_result | (1U << 31));
-	printf("Sobel array at %p so we can bypass caching\n", sobel_result);
-#endif
+	printf("Sobel array at %p so we can bypass cache\n", sobel_result);
 }
 
 short sobel_mac(unsigned char *pixels, int x, int y, const char *filter, unsigned int width)
@@ -70,7 +68,7 @@ void sobel_complete(unsigned char *pixels, short threshold)
 	int x, y;
 
 	for (y = 1; y < (sobel_height - 1); y++) {
-		for (x = 1; x < (sobel_width - 2); x += 2) {
+		for (x = 1; x < sobel_width; x++) {
 			short x_result = -pixels[(y - 1) * sobel_width + (x - 1)] + (pixels[(y - 1) * sobel_width + (x + 1)]) -
 					 (pixels[y * sobel_width + (x - 1)] << 1) + (pixels[y * sobel_width + (x + 1)] << 1) -
 					 pixels[(y + 1) * sobel_width + (x - 1)] + pixels[(y + 1) * sobel_width + (x + 1)];
@@ -81,38 +79,34 @@ void sobel_complete(unsigned char *pixels, short threshold)
 
 			uint8_t result = (x_result + y_result > threshold) ? 0xFF : 0;
 			sobel_result[(y * sobel_width) + x] = result;
-			sobel_result[(y * sobel_width) + x + 1] = result;
 		}
 	}
 }
 
-void sobel_complete_chunk(unsigned char *pixels, int total_width, int total_height, int start_row, int rows_to_process,
-			  short threshold, unsigned char *output_buffer)
+void sobel_complete_chunk(void *picture, uint32_t start_row, uint32_t row_count, uint8_t threshold)
 {
-	int x, y;
-	int end_row = start_row + rows_to_process;
-
-	// Process chunk, but need neighbors from adjacent rows
-	for (y = start_row; y < end_row; y++) {
-		// Skip first and last row of entire image (Sobel can't process edges)
-		if (y == 0 || y == (total_height - 1))
+	uint8_t *pixels = (uint8_t *)picture;
+	const uint32_t last_row = start_row + row_count;
+	uint32_t index = start_row * sobel_width;
+	for (uint32_t y = start_row; y < last_row; y++) {
+		if (y == 0 || y == (sobel_height - 1)) {
 			continue;
+		}
+		for (uint32_t x = 0; x < sobel_width; x++) {
+			short x_result = -pixels[(y - 1) * sobel_width + (x - 1)] + pixels[(y - 1) * sobel_width + (x + 1)] -
+					 (pixels[y * sobel_width + (x - 1)] << 1) + (pixels[y * sobel_width + (x + 1)] << 1) -
+					 pixels[(y + 1) * sobel_width + (x - 1)] + pixels[(y + 1) * sobel_width + (x + 1)];
 
-		for (x = 1; x < (total_width - 2); x += 2) {
-			short x_result = -pixels[(y - 1) * total_width + (x - 1)] + pixels[(y - 1) * total_width + (x + 1)] -
-					 (pixels[y * total_width + (x - 1)] << 1) + (pixels[y * total_width + (x + 1)] << 1) -
-					 pixels[(y + 1) * total_width + (x - 1)] + pixels[(y + 1) * total_width + (x + 1)];
-
-			short y_result = pixels[(y - 1) * total_width + (x - 1)] + (pixels[(y - 1) * total_width + x] << 1) +
-					 pixels[(y - 1) * total_width + (x + 1)] - pixels[(y + 1) * total_width + (x - 1)] -
-					 (pixels[(y + 1) * total_width + x] << 1) - pixels[(y + 1) * total_width + (x + 1)];
+			short y_result = pixels[(y - 1) * sobel_width + (x - 1)] + (pixels[(y - 1) * sobel_width + x] << 1) +
+					 pixels[(y - 1) * sobel_width + (x + 1)] - pixels[(y + 1) * sobel_width + (x - 1)] -
+					 (pixels[(y + 1) * sobel_width + x] << 1) - pixels[(y + 1) * sobel_width + (x + 1)];
 
 			uint8_t result = (x_result + y_result > threshold) ? 0xFF : 0;
-			output_buffer[(y * total_width) + x] = result;
-			output_buffer[(y * total_width) + x + 1] = result;
+			sobel_result[y * sobel_width + x] = result;
 		}
 	}
 }
+
 void sobel_x(unsigned char *pixels)
 {
 	int x, y;

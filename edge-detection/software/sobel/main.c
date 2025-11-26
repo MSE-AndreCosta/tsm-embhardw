@@ -13,15 +13,27 @@
 #include "sys/alt_timestamp.h"
 #include "alt_types.h"
 
-#define MEASURE(fn, ...)                                                                              \
-	do {                                                                                          \
-		printf("Calling %s\n", #fn);                                                          \
-		alt_u32 start = alt_timestamp() / (alt_timestamp_freq() / 1000);                      \
-		fn(__VA_ARGS__);                                                                      \
-		alt_u32 end = alt_timestamp() / (alt_timestamp_freq() / 1000);                        \
-		printf("Function %s took: %lu ms - %lu ms = %lu ms\n", #fn, end, start, end - start); \
+#define MEASURE(fn, ...)                                                         \
+	do {                                                                     \
+		printf("Calling %s\n", #fn);                                     \
+		alt_u32 start = alt_timestamp() / (alt_timestamp_freq() / 1000); \
+		fn(__VA_ARGS__);                                                 \
+		alt_u32 end = alt_timestamp() / (alt_timestamp_freq() / 1000);   \
 	} while (0);
 
+uint8_t *do_chunk_processing(void *image, uint32_t width, uint32_t height, uint32_t chunk_rows)
+{
+	unsigned char *grayscale = get_grayscale_picture();
+	unsigned char *result = GetSobelResult();
+
+	for (uint32_t i = 0; i < height; i += chunk_rows) {
+		const unsigned rows = (i + chunk_rows > height) ? (height - i) : chunk_rows;
+		conv_grayscale_chunk(image, i, rows);
+		sobel_complete_chunk(grayscale, i, rows, 128);
+	}
+
+	return result;
+}
 int main()
 {
 	init_LCD();
@@ -38,7 +50,14 @@ int main()
 	cam_set_image_pointer(2, buffer3);
 	cam_set_image_pointer(3, buffer4);
 	enable_continues_mode();
-	init_sobel_arrays(cam_get_xsize() >> 1, cam_get_ysize());
+	uint32_t width = cam_get_xsize() >> 1;
+	uint32_t height = cam_get_ysize();
+	init_sobel_arrays(width, height);
+	init_grayscale(width, height);
+
+	const float usable_cache = (NIOS2_DCACHE_SIZE * 0.7f);
+	const uint32_t chunk_rows = usable_cache / width;
+	printf("Usable cache is %.2f. Chunk rows %d\n", usable_cache, chunk_rows);
 
 	while (1) {
 		alt_timestamp_start();
@@ -52,7 +71,6 @@ int main()
 		const uint8_t mode = current_mode & (DIPSW_SW1_MASK | DIPSW_SW3_MASK | DIPSW_SW2_MASK);
 		uint16_t *image = (uint16_t *)current_image_pointer();
 		uint8_t *grayscale = NULL;
-		printf("Mode is %d %lu\n", mode, alt_timestamp() / alt_timestamp_freq());
 		switch (mode) {
 		case 0:
 			transfer_LCD_with_dma(&image[16520], cam_get_xsize() >> 1, cam_get_ysize(), 0);
@@ -93,21 +111,31 @@ int main()
 				vga_set_pointer(image);
 			}
 			break;
-		default:
-			MEASURE(conv_grayscale, (void *)image, cam_get_xsize() >> 1, cam_get_ysize());
-			grayscale = get_grayscale_picture();
-#if 0
-			MEASURE(sobel_x, grayscale);
-			MEASURE(sobel_y, grayscale);
+		default: {
+#if 1
+			alt_u32 start = alt_timestamp() / (alt_timestamp_freq() / 1000);
+			uint8_t *result = do_chunk_processing(image, width, height, chunk_rows);
+			alt_u32 end = alt_timestamp() / (alt_timestamp_freq() / 1000);
+
+			printf("Chunk based Processing took: %lu ms - %lu ms = %lu ms\n", end, start, end - start);
+#else
+
+			alt_u32 start = alt_timestamp() / (alt_timestamp_freq() / 1000);
+			conv_grayscale((void *)image, width, height);
+			uint8_t *result = get_grayscale_picture();
+			sobel_complete(result, 128);
+			result = GetSobelResult();
+			alt_u32 end = alt_timestamp() / (alt_timestamp_freq() / 1000);
+			printf("Complete processing took: %lu ms - %lu ms = %lu ms\n", end, start, end - start);
 #endif
-			MEASURE(sobel_complete, grayscale, 128);
-			grayscale = GetSobelResult();
-			transfer_LCD_with_dma(&grayscale[16520], cam_get_xsize() >> 1, cam_get_ysize(), 1);
+
+			transfer_LCD_with_dma(&result[16520], width, height, 1);
 			if ((current_mode & DIPSW_SW8_MASK) != 0) {
 				vga_set_swap(VGA_QuarterScreen | VGA_Grayscale);
 				vga_set_pointer(grayscale);
 			}
 			break;
+		}
 		}
 	}
 	return 0;

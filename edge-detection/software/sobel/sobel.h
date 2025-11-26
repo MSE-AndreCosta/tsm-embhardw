@@ -5,6 +5,8 @@
  *      Author: theo
  */
 
+#include <stdint.h>
+
 #ifndef SOBEL_H_
 #define SOBEL_H_
 
@@ -18,7 +20,6 @@ void sobel_complete(unsigned char *pixels, short threshold);
 unsigned short *GetSobel_rgb();
 unsigned char *GetSobelResult();
 
-void sobel_complete_chunk(unsigned char *pixels, int total_width, int total_height, int start_row, int rows_to_process,
-			  short threshold, unsigned char *output_buffer);
+void sobel_complete_chunk(void *picture, uint32_t start_row, uint32_t row_count, uint8_t threshold);
 
 #endif /* SOBEL_H_ */
