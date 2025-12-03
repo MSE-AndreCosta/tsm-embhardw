@@ -284,3 +284,49 @@ Pixel Count = 196,608
 
 Clock Cycles/Pixel = 89 cycles/pixel
 
+
+## Custom RGB to Grayscale function - 2 pixels
+
+**-O3**
+
+| Function        | Time (ms) |
+|-----------------|-----------|
+| conv + sobel    | 270       |
+
+With these results, total compute time = 0.270 seconds
+
+Total Clock Cycles = 50Mhz * 0.270s = 13,500,000 clock cycles
+Pixel Count = 196,608
+
+Clock Cycles/Pixel = 68 cycles/pixel
+
+## Custom RGB to Grayscale function - 4 pixels
+
+**-O3**
+
+| Function        | Time (ms) |
+|-----------------|-----------|
+| conv + sobel    | 240       |
+
+With these results, total compute time = 0.240 seconds
+
+Total Clock Cycles = 50Mhz * 0.240s = 12,000,000 clock cycles
+Pixel Count = 196,608
+
+Clock Cycles/Pixel = 61 cycles/pixel
+
+## Replace width/height variables with constant values
+
+**-O3**
+
+| Function        | Time (ms) |
+|-----------------|-----------|
+| conv + sobel    | 224       |
+
+With these results, total compute time = 0.224 seconds
+
+Total Clock Cycles = 50Mhz * 0.240s = 11,200,000 clock cycles
+Pixel Count = 196,608
+
+Clock Cycles/Pixel = 56 cycles/pixel
+

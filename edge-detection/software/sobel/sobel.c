@@ -9,6 +9,7 @@
 #include <stdio.h>
 #include <stdint.h>
 #include "io.h"
+#include "system.h"
 
 const char gx_array[3][3] = { { -1, 0, 1 }, { -2, 0, 2 }, { -1, 0, 1 } };
 const char gy_array[3][3] = { { 1, 2, 1 }, { 0, 0, 0 }, { -1, -2, -1 } };
@@ -17,6 +18,8 @@ short *sobel_x_result;
 short *sobel_y_result;
 unsigned short *sobel_rgb565;
 unsigned char *sobel_result;
+#define SOBEL_WIDTH 512
+
 int sobel_width;
 int sobel_height;
 
@@ -77,8 +80,7 @@ void sobel_complete(unsigned char *pixels, short threshold)
 					 pixels[(y - 1) * sobel_width + (x + 1)] - pixels[(y + 1) * sobel_width + (x - 1)] -
 					 (pixels[(y + 1) * sobel_width + x] << 1) - pixels[(y + 1) * sobel_width + (x + 1)];
 
-			uint8_t result = (x_result + y_result > threshold) ? 0xFF : 0;
-			sobel_result[(y * sobel_width) + x] = result;
+			sobel_result[(y * sobel_width) + x] = (x_result + y_result > threshold) * 0xFF;
 		}
 	}
 }
@@ -87,22 +89,22 @@ void sobel_complete_chunk(void *picture, uint32_t start_row, uint32_t row_count,
 {
 	uint8_t *pixels = (uint8_t *)picture;
 	const uint32_t last_row = start_row + row_count;
-	uint32_t index = start_row * sobel_width;
 	for (uint32_t y = start_row; y < last_row; y++) {
 		if (y == 0 || y == (sobel_height - 1)) {
 			continue;
 		}
-		for (uint32_t x = 0; x < sobel_width; x++) {
-			short x_result = -pixels[(y - 1) * sobel_width + (x - 1)] + pixels[(y - 1) * sobel_width + (x + 1)] -
-					 (pixels[y * sobel_width + (x - 1)] << 1) + (pixels[y * sobel_width + (x + 1)] << 1) -
-					 pixels[(y + 1) * sobel_width + (x - 1)] + pixels[(y + 1) * sobel_width + (x + 1)];
 
-			short y_result = pixels[(y - 1) * sobel_width + (x - 1)] + (pixels[(y - 1) * sobel_width + x] << 1) +
-					 pixels[(y - 1) * sobel_width + (x + 1)] - pixels[(y + 1) * sobel_width + (x - 1)] -
-					 (pixels[(y + 1) * sobel_width + x] << 1) - pixels[(y + 1) * sobel_width + (x + 1)];
+		for (uint32_t x = 0; x < SOBEL_WIDTH; x++) {
+			short x_result = -pixels[(y - 1) * SOBEL_WIDTH + (x - 1)] + pixels[(y - 1) * SOBEL_WIDTH + (x + 1)] -
+					 (pixels[y * SOBEL_WIDTH + (x - 1)] << 1) + (pixels[y * SOBEL_WIDTH + (x + 1)] << 1) -
+					 pixels[(y + 1) * SOBEL_WIDTH + (x - 1)] + pixels[(y + 1) * SOBEL_WIDTH + (x + 1)];
+
+			short y_result = pixels[(y - 1) * SOBEL_WIDTH + (x - 1)] + (pixels[(y - 1) * SOBEL_WIDTH + x] << 1) +
+					 pixels[(y - 1) * SOBEL_WIDTH + (x + 1)] - pixels[(y + 1) * SOBEL_WIDTH + (x - 1)] -
+					 (pixels[(y + 1) * SOBEL_WIDTH + x] << 1) - pixels[(y + 1) * SOBEL_WIDTH + (x + 1)];
 
 			uint8_t result = (x_result + y_result > threshold) ? 0xFF : 0;
-			sobel_result[y * sobel_width + x] = result;
+			sobel_result[y * SOBEL_WIDTH + x] = result;
 		}
 	}
 }

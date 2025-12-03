@@ -21,13 +21,16 @@
 		alt_u32 end = alt_timestamp() / (alt_timestamp_freq() / 1000);   \
 	} while (0);
 
-uint8_t *do_chunk_processing(void *image, uint32_t width, uint32_t height, uint32_t chunk_rows)
+#define HEIGHT 384
+#define CHUNK_ROWS 22
+
+uint8_t *do_chunk_processing(void *image, uint32_t height, uint32_t chunk_rows)
 {
 	unsigned char *grayscale = get_grayscale_picture();
 	unsigned char *result = GetSobelResult();
 
-	for (uint32_t i = 0; i < height; i += chunk_rows) {
-		const unsigned rows = (i + chunk_rows > height) ? (height - i) : chunk_rows;
+	for (uint32_t i = 0; i < HEIGHT; i += CHUNK_ROWS) {
+		const unsigned rows = (i + chunk_rows > HEIGHT) ? (HEIGHT - i) : CHUNK_ROWS;
 		conv_grayscale_chunk(image, i, rows);
 		sobel_complete_chunk(grayscale, i, rows, 128);
 	}
@@ -114,7 +117,7 @@ int main()
 		default: {
 #if 1
 			alt_u32 start = alt_timestamp() / (alt_timestamp_freq() / 1000);
-			uint8_t *result = do_chunk_processing(image, width, height, chunk_rows);
+			uint8_t *result = do_chunk_processing(image, height, chunk_rows);
 			alt_u32 end = alt_timestamp() / (alt_timestamp_freq() / 1000);
 
 			printf("Chunk based Processing took: %lu ms - %lu ms = %lu ms\n", end, start, end - start);

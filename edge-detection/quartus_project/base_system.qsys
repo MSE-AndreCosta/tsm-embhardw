@@ -161,6 +161,14 @@
          type = "String";
       }
    }
+   element rgb_to_grayscale_4_0
+   {
+      datum _sortIndex
+      {
+         value = "13";
+         type = "int";
+      }
+   }
    element sdram_ctrl
    {
       datum _sortIndex
@@ -175,6 +183,22 @@
       {
          value = "1";
          type = "boolean";
+      }
+   }
+   element sobel_x_0
+   {
+      datum _sortIndex
+      {
+         value = "14";
+         type = "int";
+      }
+   }
+   element sobel_y_0
+   {
+      datum _sortIndex
+      {
+         value = "15";
+         type = "int";
       }
    }
    element sysid
@@ -485,7 +509,7 @@
   <parameter name="cpuArchRev" value="1" />
   <parameter name="cpuID" value="0" />
   <parameter name="cpuReset" value="false" />
-  <parameter name="customInstSlavesSystemInfo" value="&lt;info/&gt;" />
+  <parameter name="customInstSlavesSystemInfo"><![CDATA[<info><slave name="rgb_to_grayscale_4_0" baseAddress="1" addressSpan="1" clockCycleType="COMBINATORIAL" /><slave name="sobel_x_0" baseAddress="0" addressSpan="1" clockCycleType="COMBINATORIAL" /><slave name="sobel_y_0" baseAddress="2" addressSpan="1" clockCycleType="COMBINATORIAL" /></info>]]></parameter>
   <parameter name="customInstSlavesSystemInfo_nios_a" value="&lt;info/&gt;" />
   <parameter name="customInstSlavesSystemInfo_nios_b" value="&lt;info/&gt;" />
   <parameter name="customInstSlavesSystemInfo_nios_c" value="&lt;info/&gt;" />
@@ -665,6 +689,11 @@
   <parameter name="width" value="8" />
  </module>
  <module
+   name="rgb_to_grayscale_4_0"
+   kind="rgb_to_grayscale_4"
+   version="1.0"
+   enabled="1" />
+ <module
    name="sdram_ctrl"
    kind="altera_avalon_new_sdram_controller"
    version="18.1"
@@ -693,6 +722,8 @@
   <parameter name="registerDataIn" value="true" />
   <parameter name="rowWidth" value="12" />
  </module>
+ <module name="sobel_x_0" kind="sobel_x" version="1.0" enabled="1" />
+ <module name="sobel_y_0" kind="sobel_y" version="1.0" enabled="1" />
  <module
    name="sysid"
    kind="altera_avalon_sysid_qsys"
@@ -951,6 +982,33 @@
    start="nios2_gen2_0.irq"
    end="ProfileTimer.irq">
   <parameter name="irqNumber" value="5" />
+ </connection>
+ <connection
+   kind="nios_custom_instruction"
+   version="18.1"
+   start="nios2_gen2_0.custom_instruction_master"
+   end="rgb_to_grayscale_4_0.nios_custom_instruction_slave">
+  <parameter name="CIName">rgb_to_grayscale_4_0</parameter>
+  <parameter name="arbitrationPriority" value="1" />
+  <parameter name="baseAddress" value="1" />
+ </connection>
+ <connection
+   kind="nios_custom_instruction"
+   version="18.1"
+   start="nios2_gen2_0.custom_instruction_master"
+   end="sobel_x_0.nios_custom_instruction_slave">
+  <parameter name="CIName" value="sobel_x_0" />
+  <parameter name="arbitrationPriority" value="1" />
+  <parameter name="baseAddress" value="0" />
+ </connection>
+ <connection
+   kind="nios_custom_instruction"
+   version="18.1"
+   start="nios2_gen2_0.custom_instruction_master"
+   end="sobel_y_0.nios_custom_instruction_slave">
+  <parameter name="CIName" value="sobel_y_0" />
+  <parameter name="arbitrationPriority" value="1" />
+  <parameter name="baseAddress" value="2" />
  </connection>
  <connection
    kind="reset"
