@@ -325,8 +325,24 @@ Clock Cycles/Pixel = 61 cycles/pixel
 
 With these results, total compute time = 0.224 seconds
 
-Total Clock Cycles = 50Mhz * 0.240s = 11,200,000 clock cycles
+Total Clock Cycles = 50Mhz * 0.224s = 11,200,000 clock cycles
 Pixel Count = 196,608
 
 Clock Cycles/Pixel = 56 cycles/pixel
+
+
+## Only convert and use sobel filter on the required pixels (240x320)
+
+**-O3**
+
+| Function        | Time (ms) |
+|-----------------|-----------|
+| conv + sobel    | 90        |
+
+With these results, total compute time = 0.09 seconds
+
+Total Clock Cycles = 50Mhz * 0.09s = 4,500,000 clock cycles
+Pixel Count = 196,608
+
+Clock Cycles/Pixel = 22 cycles/pixel
 

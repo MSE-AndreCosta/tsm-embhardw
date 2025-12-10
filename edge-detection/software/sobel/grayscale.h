@@ -10,6 +10,13 @@
 
 #include <stdint.h>
 
+#define CAMERA_WIDTH 512
+#define CAMERA_HEIGHT 384
+
+#define GRAYSCALE_WIDTH 240
+#define GRAYSCALE_HEIGHT 320
+
+
 void init_grayscale(int width, int height);
 void conv_grayscale(void *picture, int width, int height);
 int get_grayscale_width();

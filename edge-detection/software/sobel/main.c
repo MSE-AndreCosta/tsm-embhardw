@@ -21,22 +21,28 @@
 		alt_u32 end = alt_timestamp() / (alt_timestamp_freq() / 1000);   \
 	} while (0);
 
-#define HEIGHT 384
-#define CHUNK_ROWS 22
+#define USABLE_CACHE (NIOS2_DCACHE_SIZE * 0.7f)
+#define CHUNK_ROWS	 (uint32_t)(USABLE_CACHE / GRAYSCALE_WIDTH)
 
-uint8_t *do_chunk_processing(void *image, uint32_t height, uint32_t chunk_rows)
+
+#define BATCH_COUNT	     (GRAYSCALE_HEIGHT / CHUNK_ROWS)
+#define LAST_BATCH_ROW_COUNT (GRAYSCALE_HEIGHT % CHUNK_ROWS)
+
+unsigned char *grayscale = NULL;
+
+static void do_chunk_processing(void *image)
 {
-	unsigned char *grayscale = get_grayscale_picture();
-	unsigned char *result = GetSobelResult();
-
-	for (uint32_t i = 0; i < HEIGHT; i += CHUNK_ROWS) {
-		const unsigned rows = (i + chunk_rows > HEIGHT) ? (HEIGHT - i) : CHUNK_ROWS;
-		conv_grayscale_chunk(image, i, rows);
-		sobel_complete_chunk(grayscale, i, rows, 128);
+	for (uint32_t i = 0; i < BATCH_COUNT * CHUNK_ROWS; i += CHUNK_ROWS) {
+		conv_grayscale_chunk(image, i, CHUNK_ROWS);
+		sobel_complete_chunk(grayscale, i, CHUNK_ROWS);
 	}
 
-	return result;
+	if (LAST_BATCH_ROW_COUNT > 0){
+		conv_grayscale_chunk(image, BATCH_COUNT * CHUNK_ROWS, LAST_BATCH_ROW_COUNT);
+		sobel_complete_chunk(grayscale, BATCH_COUNT * CHUNK_ROWS, LAST_BATCH_ROW_COUNT);
+	}
 }
+
 int main()
 {
 	init_LCD();
@@ -55,12 +61,13 @@ int main()
 	enable_continues_mode();
 	uint32_t width = cam_get_xsize() >> 1;
 	uint32_t height = cam_get_ysize();
-	init_sobel_arrays(width, height);
+	init_sobel_arrays(GRAYSCALE_WIDTH, GRAYSCALE_HEIGHT);
 	init_grayscale(width, height);
+	grayscale = get_grayscale_picture();
 
-	const float usable_cache = (NIOS2_DCACHE_SIZE * 0.7f);
-	const uint32_t chunk_rows = usable_cache / width;
-	printf("Usable cache is %.2f. Chunk rows %d\n", usable_cache, chunk_rows);
+	uint8_t *result = GetSobelResult();
+
+	printf("Usable cache is %.2f. Chunk rows %d\n", USABLE_CACHE, CHUNK_ROWS);
 
 	while (1) {
 		alt_timestamp_start();
@@ -117,7 +124,7 @@ int main()
 		default: {
 #if 1
 			alt_u32 start = alt_timestamp() / (alt_timestamp_freq() / 1000);
-			uint8_t *result = do_chunk_processing(image, height, chunk_rows);
+			do_chunk_processing(image);
 			alt_u32 end = alt_timestamp() / (alt_timestamp_freq() / 1000);
 
 			printf("Chunk based Processing took: %lu ms - %lu ms = %lu ms\n", end, start, end - start);
@@ -132,7 +139,9 @@ int main()
 			printf("Complete processing took: %lu ms - %lu ms = %lu ms\n", end, start, end - start);
 #endif
 
-			transfer_LCD_with_dma(&result[16520], width, height, 1);
+			//transfer_LCD_with_dma(&result[16520], CAMERA_WIDTH, CAMERA_HEIGHT, 1);
+			transfer_LCD_with_dma(result, GRAYSCALE_WIDTH, GRAYSCALE_HEIGHT, 1);
+
 			if ((current_mode & DIPSW_SW8_MASK) != 0) {
 				vga_set_swap(VGA_QuarterScreen | VGA_Grayscale);
 				vga_set_pointer(grayscale);

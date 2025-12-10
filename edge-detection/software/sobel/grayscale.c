@@ -10,12 +10,13 @@
 #include <stdlib.h>
 #include <io.h>
 #include <system.h>
+#include "grayscale.h"
 
 uint8_t *grayscale_array;
 uint32_t grayscale_width = 0;
 uint32_t grayscape_height = 0;
 
-#define GRAYSCALE_WIDTH 512
+
 
 void init_grayscale(int width, int height)
 {
@@ -48,22 +49,24 @@ void conv_grayscale(void *picture, int width, int height)
 		}
 	}
 }
-//			const uint16_t rgb = pixels[index];
-//			const uint8_t gray = ((rgb >> 5) & 0x3F) << 2;
 
 void conv_grayscale_chunk(void *picture, uint32_t start_row, uint32_t row_count)
 {
 	uint16_t *pixels = (uint16_t *)picture;
 	const unsigned last_row = start_row + row_count;
-	uint32_t index = start_row * GRAYSCALE_WIDTH;
+	uint32_t src_index = start_row * CAMERA_WIDTH;
+	uint32_t dst_index = start_row * GRAYSCALE_WIDTH;
+
 	for (uint32_t y = start_row; y < last_row; y++) {
-		for (uint32_t x = 0; x < GRAYSCALE_WIDTH - 3; x+=4) {
-            const uint32_t a = *((uint32_t*)&pixels[index]);
-            const uint32_t b = *((uint32_t*)&pixels[index + 2]);
+		for (uint32_t x = 0; x < GRAYSCALE_WIDTH; x+=4) {
+            const uint32_t a = *((uint32_t*)&pixels[src_index]);
+            const uint32_t b = *((uint32_t*)&pixels[src_index + 2]);
             const uint32_t result = ALT_CI_RGB_TO_GRAYSCALE_4_0(a, b);
-            *((uint32_t*)&grayscale_array[index]) = (uint32_t)result;
-			index+=4;
+            *((uint32_t*)&grayscale_array[dst_index]) = (uint32_t)result;
+			src_index +=4;
+			dst_index +=4;
 		}
+		src_index += CAMERA_WIDTH - GRAYSCALE_WIDTH;
 	}
 }
 
