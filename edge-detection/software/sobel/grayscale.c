@@ -16,8 +16,6 @@ uint8_t *grayscale_array;
 uint32_t grayscale_width = 0;
 uint32_t grayscape_height = 0;
 
-
-
 void init_grayscale(int width, int height)
 {
 	printf("Init grayscale arrays %dx%d. Pixel Count = %d", width, height, width * height);
@@ -58,13 +56,13 @@ void conv_grayscale_chunk(void *picture, uint32_t start_row, uint32_t row_count)
 	uint32_t dst_index = start_row * GRAYSCALE_WIDTH;
 
 	for (uint32_t y = start_row; y < last_row; y++) {
-		for (uint32_t x = 0; x < GRAYSCALE_WIDTH; x+=4) {
-            const uint32_t a = *((uint32_t*)&pixels[src_index]);
-            const uint32_t b = *((uint32_t*)&pixels[src_index + 2]);
-            const uint32_t result = ALT_CI_RGB_TO_GRAYSCALE_4_0(a, b);
-            *((uint32_t*)&grayscale_array[dst_index]) = (uint32_t)result;
-			src_index +=4;
-			dst_index +=4;
+		for (uint32_t x = 0; x < GRAYSCALE_WIDTH; x += 4) {
+			const uint32_t a = *((uint32_t *)&pixels[src_index]);
+			const uint32_t b = *((uint32_t *)&pixels[src_index + 2]);
+			const uint32_t result = ALT_CI_RGB_TO_GRAYSCALE_4_0(a, b);
+			*((uint32_t *)&grayscale_array[dst_index]) = (uint32_t)result;
+			src_index += 4;
+			dst_index += 4;
 		}
 		src_index += CAMERA_WIDTH - GRAYSCALE_WIDTH;
 	}

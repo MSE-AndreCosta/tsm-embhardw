@@ -21,9 +21,8 @@
 		alt_u32 end = alt_timestamp() / (alt_timestamp_freq() / 1000);   \
 	} while (0);
 
-#define USABLE_CACHE (NIOS2_DCACHE_SIZE * 0.7f)
-#define CHUNK_ROWS	 (uint32_t)(USABLE_CACHE / GRAYSCALE_WIDTH)
-
+#define USABLE_CACHE	     (NIOS2_DCACHE_SIZE * 0.7f)
+#define CHUNK_ROWS	     (uint32_t)(USABLE_CACHE / GRAYSCALE_WIDTH)
 
 #define BATCH_COUNT	     (GRAYSCALE_HEIGHT / CHUNK_ROWS)
 #define LAST_BATCH_ROW_COUNT (GRAYSCALE_HEIGHT % CHUNK_ROWS)
@@ -37,7 +36,7 @@ static void do_chunk_processing(void *image)
 		sobel_complete_chunk(grayscale, i, CHUNK_ROWS);
 	}
 
-	if (LAST_BATCH_ROW_COUNT > 0){
+	if (LAST_BATCH_ROW_COUNT > 0) {
 		conv_grayscale_chunk(image, BATCH_COUNT * CHUNK_ROWS, LAST_BATCH_ROW_COUNT);
 		sobel_complete_chunk(grayscale, BATCH_COUNT * CHUNK_ROWS, LAST_BATCH_ROW_COUNT);
 	}
