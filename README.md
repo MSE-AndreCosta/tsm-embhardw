@@ -101,6 +101,8 @@ Une fois cela, j'ai du faire le portage de LVGL, le code source est disponible a
 
 # Edge Detection
 
+Each performance improvement step can be found in a logical manner in the commit history of [this repository](https://github.com/MSE-AndreCosta/tsm-embhardw)
+
 ## Starting point
 
 **-O0**
