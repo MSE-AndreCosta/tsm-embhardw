@@ -130,7 +130,6 @@ int main()
 			printf("Complete processing took: %lu ms - %lu ms = %lu ms\n", end, start, end - start);
 #endif
 
-			//transfer_LCD_with_dma(&result[16520], CAMERA_WIDTH, CAMERA_HEIGHT, 1);
 			transfer_LCD_with_dma(result, GRAYSCALE_WIDTH, GRAYSCALE_HEIGHT, 1);
 
 			if ((current_mode & DIPSW_SW8_MASK) != 0) {
