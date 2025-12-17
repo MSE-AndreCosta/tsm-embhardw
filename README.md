@@ -101,7 +101,7 @@ Une fois cela, j'ai du faire le portage de LVGL, le code source est disponible a
 
 # Edge Detection
 
-## Starting Point
+## Starting point
 
 **-O0**
 
@@ -112,6 +112,11 @@ Une fois cela, j'ai du faire le portage de LVGL, le code source est disponible a
 | sobel_y         | 14569     |
 | sobel_threshold | 2053      |
 
+Total compute time = 33.512 seconds
+Total Clock Cycles = 50MHz × 33.512s = 1,675,600,000 clock cycles
+Pixel Count = 196,608
+Clock Cycles/Pixel = 8,522 cycles/pixel
+
 **-O1**
 
 | Function        | Time (ms) |
@@ -120,6 +125,11 @@ Une fois cela, j'ai du faire le portage de LVGL, le code source est disponible a
 | sobel_x         | 2526      |
 | sobel_y         | 2525      |
 | sobel_threshold | 659       |
+
+Total compute time = 6.454 seconds
+Total Clock Cycles = 50MHz × 6.454s = 322,700,000 clock cycles
+Pixel Count = 196,608
+Clock Cycles/Pixel = 1,641 cycles/pixel
 
 **-O2**
 
@@ -130,6 +140,11 @@ Une fois cela, j'ai du faire le portage de LVGL, le code source est disponible a
 | sobel_y         | 2132      |
 | sobel_threshold | 621       |
 
+Total compute time = 5.551 seconds
+Total Clock Cycles = 50MHz × 5.551s = 277,550,000 clock cycles
+Pixel Count = 196,608
+Clock Cycles/Pixel = 1,412 cycles/pixel
+
 **-O3**
 
 | Function        | Time (ms) |
@@ -139,6 +154,10 @@ Une fois cela, j'ai du faire le portage de LVGL, le code source est disponible a
 | sobel_y         | 528       |
 | sobel_threshold | 621       |
 
+Total compute time = 2.446 seconds
+Total Clock Cycles = 50MHz × 2.446s = 122,300,000 clock cycles
+Pixel Count = 196,608
+Clock Cycles/Pixel = 622 cycles/pixel
 
 ## Loop Unrolling - Inner loop in `sobel_mac`
 
@@ -151,6 +170,10 @@ Une fois cela, j'ai du faire le portage de LVGL, le code source est disponible a
 | sobel_y         | 10880     |
 | sobel_threshold | 2062      |
 
+Total compute time = 26.227 seconds
+Total Clock Cycles = 50MHz × 26.227s = 1,311,350,000 clock cycles
+Pixel Count = 196,608
+Clock Cycles/Pixel = 6,670 cycles/pixel
 
 ## Loop Unrolling - Inner loop + Outer loop in `sobel_mac`
 
@@ -163,6 +186,10 @@ Une fois cela, j'ai du faire le portage de LVGL, le code source est disponible a
 | sobel_y         | 8357      |
 | sobel_threshold | 2041      |
 
+Total compute time = 21.198 seconds
+Total Clock Cycles = 50MHz × 21.198s = 1,059,900,000 clock cycles
+Pixel Count = 196,608
+Clock Cycles/Pixel = 5,390 cycles/pixel
 
 ## Inline `sobel_mac`
 
@@ -175,6 +202,10 @@ Une fois cela, j'ai du faire le portage de LVGL, le code source est disponible a
 | sobel_y         | 8167      |
 | sobel_threshold | 2045      |
 
+Total compute time = 20.802 seconds
+Total Clock Cycles = 50MHz × 20.802s = 1,040,100,000 clock cycles
+Pixel Count = 196,608
+Clock Cycles/Pixel = 5,291 cycles/pixel
 
 ## Merge `sobel_x` and `sobel_y` into a single function
 
@@ -188,6 +219,10 @@ Une fois cela, j'ai du faire le portage de LVGL, le code source est disponible a
 
 Performance stays the same. Merging `sobel_x` and `sobel_y` together allows us to save a couple of clock cycles 
 that are consumed when entering a function, these clock cycles are negligeable since these two functions are called only once.
+Total compute time = 20.894 seconds
+Total Clock Cycles = 50MHz × 20.894s = 1,044,700,000 clock cycles
+Pixel Count = 196,608
+Clock Cycles/Pixel = 5,314 cycles/pixel
 
 ## Interpolation
 
@@ -199,6 +234,11 @@ that are consumed when entering a function, these clock cycles are negligeable s
 | sobel_complete  | 8673      |
 | sobel_threshold | 2045      |
 
+Total compute time = 13.137 seconds
+Total Clock Cycles = 50MHz × 13.137s = 656,850,000 clock cycles
+Pixel Count = 196,608
+Clock Cycles/Pixel = 3,341 cycles/pixel
+
 ## Grayscale approximation
 
 **-O0**
@@ -208,6 +248,11 @@ that are consumed when entering a function, these clock cycles are negligeable s
 | conv_grayscale  | 1995      |
 | sobel_complete  | 8660      |
 | sobel_threshold | 2050      |
+
+Total compute time = 12.705 seconds
+Total Clock Cycles = 50MHz × 12.705s = 635,250,000 clock cycles
+Pixel Count = 196,608
+Clock Cycles/Pixel = 3,231 cycles/pixel
 
 ## Grayscale with green channel only
 
@@ -219,6 +264,10 @@ that are consumed when entering a function, these clock cycles are negligeable s
 | sobel_complete  | 8660      |
 | sobel_threshold | 2050      |
 
+Total compute time = 11.981 seconds
+Total Clock Cycles = 50MHz × 11.981s = 599,050,000 clock cycles
+Pixel Count = 196,608
+Clock Cycles/Pixel = 3,047 cycles/pixel
 
 ## Replace filter with hardcoded operations
 
@@ -345,4 +394,3 @@ Total Clock Cycles = 50Mhz * 0.09s = 4,500,000 clock cycles
 Pixel Count = 196,608
 
 Clock Cycles/Pixel = 22 cycles/pixel
-
