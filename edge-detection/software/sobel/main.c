@@ -58,7 +58,7 @@ int main()
 
 	uint8_t *result = GetSobelResult();
 
-	printf("Usable cache is %.2f. Chunk rows %d\n", USABLE_CACHE, CHUNK_ROWS);
+	printf("Usable cache is %.2f. Chunk rows %ld\n", USABLE_CACHE, CHUNK_ROWS);
 
 	while (1) {
 		alt_timestamp_start();
