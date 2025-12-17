@@ -13,14 +13,6 @@
 #include "sys/alt_timestamp.h"
 #include "alt_types.h"
 
-#define MEASURE(fn, ...)                                                         \
-	do {                                                                     \
-		printf("Calling %s\n", #fn);                                     \
-		alt_u32 start = alt_timestamp() / (alt_timestamp_freq() / 1000); \
-		fn(__VA_ARGS__);                                                 \
-		alt_u32 end = alt_timestamp() / (alt_timestamp_freq() / 1000);   \
-	} while (0);
-
 #define USABLE_CACHE	     (NIOS2_DCACHE_SIZE * 0.7f)
 #define CHUNK_ROWS	     (uint32_t)(USABLE_CACHE / GRAYSCALE_WIDTH)
 
@@ -89,7 +81,7 @@ int main()
 			}
 			break;
 		case 1:
-			MEASURE(conv_grayscale, (void *)image, cam_get_xsize() >> 1, cam_get_ysize());
+			conv_grayscale((void *)image, cam_get_xsize() >> 1, cam_get_ysize());
 			grayscale = get_grayscale_picture();
 			transfer_LCD_with_dma(&grayscale[16520], cam_get_xsize() >> 1, cam_get_ysize(), 1);
 			if ((current_mode & DIPSW_SW8_MASK) != 0) {
@@ -98,7 +90,7 @@ int main()
 			}
 			break;
 		case 2:
-			MEASURE(conv_grayscale, (void *)image, cam_get_xsize() >> 1, cam_get_ysize());
+			conv_grayscale((void *)image, cam_get_xsize() >> 1, cam_get_ysize());
 			grayscale = get_grayscale_picture();
 			sobel_x_with_rgb(grayscale);
 			image = GetSobel_rgb();
@@ -109,9 +101,9 @@ int main()
 			}
 			break;
 		case 3:
-			MEASURE(conv_grayscale, (void *)image, cam_get_xsize() >> 1, cam_get_ysize());
+			conv_grayscale((void *)image, cam_get_xsize() >> 1, cam_get_ysize());
 			grayscale = get_grayscale_picture();
-			MEASURE(sobel_x, grayscale);
+			sobel_x(grayscale);
 			sobel_y_with_rgb(grayscale);
 			image = GetSobel_rgb();
 			transfer_LCD_with_dma(&image[16520], cam_get_xsize() >> 1, cam_get_ysize(), 0);
