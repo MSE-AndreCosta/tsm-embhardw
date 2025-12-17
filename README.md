@@ -226,6 +226,11 @@ Clock Cycles/Pixel = 5,314 cycles/pixel
 
 ## Interpolation
 
+Here the approach was to skip calculating some pixels, in the sobel algorithm, I tried calculating every other pixel in a row,
+meaning that I would calculate S(y,x) and I would copy the same value to S(y,x+1). This gave me a nice boost of performance but 
+I would later revert the change when implementing the cache, as I realized that the result between this approach and the standard algorithm differentiated too much,
+by the fact that sobel is meant to detect edges, and if the edge was thin enough, we would miss it.
+
 **-O0**
 
 | Function        | Time (ms) |
@@ -239,7 +244,15 @@ Total Clock Cycles = 50MHz × 13.137s = 656,850,000 clock cycles
 Pixel Count = 196,608
 Clock Cycles/Pixel = 3,341 cycles/pixel
 
-## Grayscale approximation
+## Grayscale approximation + reduce allocation count
+
+Here, I implemented two performance optimizations.
+
+First I removed the reallocation logic inside `conv_grayscale`. Before we would free the grayscale array every frame and reallocate,
+this was modified to simply do the allocation if the size ever changed.
+
+Secondly, the division by 100 was replaced with a right shift with 7.
+This is to avoid the division with a more simpler operation that produces a similar result.
 
 **-O0**
 
@@ -256,6 +269,10 @@ Clock Cycles/Pixel = 3,231 cycles/pixel
 
 ## Grayscale with green channel only
 
+
+Here I implemented an algorithm change, in order to convert the grayscale value of the pixel, I decided to simply use the green channel, as the 
+human eye is more sensible to the green channel. This avoids the bit shifts + masking to compute the other channels values, and also avoids the bit shift (division) previously done.
+
 **-O0**
 
 | Function        | Time (ms) |
@@ -271,6 +288,14 @@ Clock Cycles/Pixel = 3,047 cycles/pixel
 
 ## Replace filter with hardcoded operations
 
+Here I replaced the classical convolution and hardcoded the operations, since the mask is always the same, the operations were simplified as follows:
+
+- Multiplication by 0 was removed, meaning that we don't account for the values in the middle column for the `x` result and we don't account for the values in the middle row for the `y` result.
+- Multiplication by 1 was removed, we instead take the value of the pixel directly. Same with multiplication by `-1`, we simply negate the value
+- Multiplication by 2 was kept with a bit shift
+
+At the end, the compiler will have a much easier time optimizing our sobel result as it doesn't have to load the convolution mask from ram.
+
 **-O0**
 
 | Function        | Time (ms) |
@@ -282,13 +307,15 @@ Clock Cycles/Pixel = 3,047 cycles/pixel
 
 With these results, total compute time = 7.35 seconds
 
-Total Clock Cycles = 50Mhz * 7.35s = 367,500,000 clock cycles
+Total Clock Cycles = 50MHz * 7.35s = 367,500,000 clock cycles
 Pixel Count = 196,608
 
 Clock Cycles/Pixel = 1,869 cycles/pixel
 
 
 ## Compute threshold in sobel_complete
+
+Here I realized that I could compute the `x`, `y` and the resulting `threshold` at the same time, which means I don't have to iterate the same image multiple times.
 
 **-O0**
 
@@ -299,7 +326,7 @@ Clock Cycles/Pixel = 1,869 cycles/pixel
 
 With these results, total compute time = 5.025 seconds
 
-Total Clock Cycles = 50Mhz * 5.05s = 251,250,000 clock cycles
+Total Clock Cycles = 50MHz * 5.05s = 251,250,000 clock cycles
 Pixel Count = 196,608
 
 Clock Cycles/Pixel = 1278 cycles/pixel
@@ -313,12 +340,28 @@ Clock Cycles/Pixel = 1278 cycles/pixel
 
 With these results, total compute time = 0.895 seconds
 
-Total Clock Cycles = 50Mhz * 0.895s = 44,750,000 clock cycles
+Total Clock Cycles = 50MHz * 0.895s = 44,750,000 clock cycles
 Pixel Count = 196,608
 
 Clock Cycles/Pixel = 228 cycles/pixel
 
+At this point forward, we only care about the most optimal performance and thus, I stopped measuring the performance with `-O0`.
+
 ## Chunk-based with 16kB cache size
+
+Here we decided to enable the cache, I used `4kB` Instruction Cache and a `16kB` Data Cache.
+
+In our case, we have a very localized algorithm, we end up always doing the same instructions, as such our Instruction Cache doesn't have to be big.
+
+As for the data cache, ideally, we would love to have the grayscale result in cache, the sobel result is not as important as the LCD will then have to fetch the data from RAM anyway,
+so there's no reason to cache that result.
+
+The grayscale size is of 512*384=196'608 Bytes. Unfortunately, the biggest cache size I could possibly enable is of 64kB, and even that doesn't fit in my Nios II.
+I tried out 32 kB for the Data cache size but it seemed to hinder the performance. After trying 16kB, with a tile implementation that makes sense, I was able to improve the performance.
+
+The tile approach, takes into account the cache size, and computes a "usable" cache size, which I arbitrarily decided to compute it as 70% of the total cache size.
+With that we can calculate the amount of rows we can do per title, here we use rows as we want a contiguous memory so we don't jump around and invalidate the cache
+Then for each chunk we convert and convolute that particular chunk until we've done the whole image.
 
 **-O3**
 
@@ -328,13 +371,18 @@ Clock Cycles/Pixel = 228 cycles/pixel
 
 With these results, total compute time = 0.350 seconds
 
-Total Clock Cycles = 50Mhz * 0.350s = 17,500,000 clock cycles
+Total Clock Cycles = 50MHz * 0.350s = 17,500,000 clock cycles
 Pixel Count = 196,608
 
 Clock Cycles/Pixel = 89 cycles/pixel
 
 
 ## Custom RGB to Grayscale function - 2 pixels
+
+As for my first custom instruction, I decided to create a grayscale conversion function in VHDL, which will be super fast as we just need to connect the correct bits of the input signal
+into the result signal.
+
+The first implementation uses a single operand to take in 2 pixels (2x16bits = 1x32bits operand).
 
 **-O3**
 
@@ -344,12 +392,15 @@ Clock Cycles/Pixel = 89 cycles/pixel
 
 With these results, total compute time = 0.270 seconds
 
-Total Clock Cycles = 50Mhz * 0.270s = 13,500,000 clock cycles
+Total Clock Cycles = 50MHz * 0.270s = 13,500,000 clock cycles
 Pixel Count = 196,608
 
 Clock Cycles/Pixel = 68 cycles/pixel
 
 ## Custom RGB to Grayscale function - 4 pixels
+
+After seeing how fast it was, I went ahead and implemented a version that takes in 2 operands, meaning that we can do 4 pixels in a single operation.
+This improved the performance further.
 
 **-O3**
 
@@ -359,12 +410,21 @@ Clock Cycles/Pixel = 68 cycles/pixel
 
 With these results, total compute time = 0.240 seconds
 
-Total Clock Cycles = 50Mhz * 0.240s = 12,000,000 clock cycles
+Total Clock Cycles = 50MHz * 0.240s = 12,000,000 clock cycles
 Pixel Count = 196,608
 
 Clock Cycles/Pixel = 61 cycles/pixel
 
 ## Replace width/height variables with constant values
+
+As we finalize the implementation, I decided to replace the variable width and height variables with constant values,
+this allows the compiler to optimize the loops as the iteration count is now known at compile time.
+Using variables means that the compiler can't optimize the loops as it doesn't know the width and height at compile time, we do though and replacing the width and height with constant values
+actually produces performance gains
+
+Another important remark here is that we need to also use these constants inside the grayscale and sobel functions, if we simply replace the invocations of 
+these functions with these constant values, the compiler won't be able to optimize them, even if we invoke these functions with the same parameters all the time.
+This is because compiler optimizations are done at the translation unit level. Optimizations across multiple translation units, require Link-time Optimizations to be enabled.
 
 **-O3**
 
@@ -374,7 +434,7 @@ Clock Cycles/Pixel = 61 cycles/pixel
 
 With these results, total compute time = 0.224 seconds
 
-Total Clock Cycles = 50Mhz * 0.224s = 11,200,000 clock cycles
+Total Clock Cycles = 50MHz * 0.224s = 11,200,000 clock cycles
 Pixel Count = 196,608
 
 Clock Cycles/Pixel = 56 cycles/pixel
@@ -382,15 +442,23 @@ Clock Cycles/Pixel = 56 cycles/pixel
 
 ## Only convert and use sobel filter on the required pixels (240x320)
 
+Finally, for the final optimization, I stopped converting and computing the sobel over the whole image that comes from the camera, instead
+when converting the image to grayscale, we simply compute the top left part of it, matching the LCD dimensions.
+
+Here's an image showing what part I grab from the camera image. This allows me to save a lot of cycles that we previously used to compute cycles that would be
+dropped and never shown anyway.
+
+![](./media/lcd-camera-dimensions.png)
+
 **-O3**
 
 | Function        | Time (ms) |
 |-----------------|-----------|
 | conv + sobel    | 90        |
 
-With these results, total compute time = 0.09 seconds
+With these results, total compute time = 0.09 seconds -- 11.1 FPS
 
-Total Clock Cycles = 50Mhz * 0.09s = 4,500,000 clock cycles
+Total Clock Cycles = 50MHz * 0.09s = 4,500,000 clock cycles
 Pixel Count = 196,608
 
 Clock Cycles/Pixel = 22 cycles/pixel
